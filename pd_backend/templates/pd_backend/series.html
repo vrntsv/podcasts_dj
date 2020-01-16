@@ -1,0 +1,30 @@
+{% extends 'pd_backend/base.html' %}
+
+{% load djutils %}
+{% block title %}
+   <title> {{ series.0|get_value_from_dict:'title_of_audio' }} </title>
+{% endblock %}
+
+{% block content %}
+  <section class="page-section portfolio" >
+    <div class="row justify-content-center">
+        <div class="card my-2" style="width: 80%">
+          <div class="card-body ">
+            <h2 class="card-title">{{ series.0|get_value_from_dict:'title_of_audio' }} </h2>
+            <audio controls style="width: 100%;">
+              <source src="audio/music.ogg" type="audio/ogg; codecs=vorbis">
+              <source src="{{ series.0|get_value_from_dict:'audio'}}" type="audio/mpeg">
+              Тег audio не поддерживается вашим браузером. 
+              <!--<a href="audio/music.mp3">Скачайте выпуск</a>. -->
+            </audio>
+          </div>
+          <div class="card-footer">
+              <p>{{ series.0|get_value_from_dict:'description_of_audio' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+{% endblock %}
