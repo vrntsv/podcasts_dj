@@ -14,7 +14,14 @@ def index_router(request):
                           'carousel_podcasts_active': services.get_podcasts_for_carousel_active(),
                           'main_podcast': services.get_main_podcasts(),
                       }
+                      )
+    if request.method == 'POST':
+        print(services.search_podcasts(request.POST.get('search_data')))
+        return render(request, 'pd_backend/index.html',
+                      {
 
+                          'main_podcast': services.search_podcasts(request.POST.get('search_data')),
+                      }
                       )
     return HttpResponse(status=405)
 
@@ -40,5 +47,6 @@ def series_router(request, podcast_id, series_id):
 
         return render(request, 'pd_backend/series.html',
                       {'series': services.get_series_full_info(podcast_id, series_id)})
+
 
 # Create your views here.

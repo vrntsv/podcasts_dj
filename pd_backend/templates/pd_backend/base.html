@@ -23,9 +23,11 @@
 
 </head>
 <body id="page-top">
-
   <div class="container">
-      <input style="width: 100%; margin-top: 5%" class="btn finder" type="text" placeholder='Введи сюда что-то ...'>
+      <form action="{% url 'pd_backend:index_url' %}" method="post">
+          {% csrf_token %}
+        <input style="width: 100%; margin-top: 5%" name="search_data" class="btn finder" type="text" placeholder='Введи сюда что-то ...' type="submit">
+      </form>
   </div>
 
  {% block content %}

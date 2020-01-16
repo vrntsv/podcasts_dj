@@ -6,6 +6,7 @@
 {% endblock %}
 {% block content %}
 
+    {% if carousel_podcasts and carousel_podcasts_active %}
   <section class="page-section portfolio" id="portfolio">
     <div class="container">
 
@@ -55,6 +56,7 @@
     </div>
   </section>
 
+    {% endif %}
   <!-- Canals Section -->
   <section class="page-section portfolio" id="portfolio">
     <div class="container">

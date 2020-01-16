@@ -1,5 +1,7 @@
 from . import models
 from django.db.models import Count
+from django.db.models import Q
+
 
 
 def get_main_podcasts(_from=12, _to=None, ):
@@ -50,6 +52,13 @@ def get_podcast_full_info(id, return_podcast=False, return_tags=False, return_se
             print('err')
     if return_tags:
         return tags_podcast
+
+
+def search_podcasts(search_str):
+    podcasts = models.Podcasts.objects.filter(Q(title_of_podcast__icontains=search_str) |
+                                              Q(description_of_podcast__icontains=search_str) |
+                                              Q(author_of_podcast__icontains=search_str)).values()
+    return podcasts
 
 
 def get_series_full_info(podcast_id, series_id):
