@@ -61,6 +61,16 @@ def search_podcasts(search_str):
     return podcasts
 
 
+def search_tag(tag_id):
+    podcast_ids = models.PodcastsWithKeywords.objects.filter(id_of_keyword=tag_id).values('id_of_podcast')
+    if podcast_ids.__len__() > 1:
+        podcasts = []
+        for id in podcast_ids:
+            podcasts.append(models.Podcasts.objects.filter(id_of_podcast=id['id_of_podcast']).values()[0])
+        return podcasts
+    else:
+        return 'NotFoundTag'
+
+
 def get_series_full_info(podcast_id, series_id):
-    print()
     return models.Items.objects.all().filter(id_of_podcast=podcast_id, id_of_item=series_id).values()

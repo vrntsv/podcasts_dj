@@ -2,137 +2,88 @@
 {% load static %}
 {% load djutils %}
 
-
-    {% if carousel_podcasts and carousel_podcasts_active %}
-  <section class="page-section portfolio" id="portfolio">
-    <div class="container">
-
-      <div id="carousel" class="carousel slide " data-interval='2000' data-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-              <div class="row justify-content-center" >
-                  {% for podcast in carousel_podcasts_active %}
-                      <a href="{% url 'pd_backend:podcast_url' podcast.0|get_value_from_dict:'id_of_podcast' %}">
-                         <img style='margin: 3%; width: 200px;' class="img-slider" src="{{ podcast.0|get_value_from_dict:'url_of_image_of_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
-                      </a>
-                      <a href="{% url 'pd_backend:podcast_url' podcast.1|get_value_from_dict:'id_of_podcast' %}">
-                         <img style='margin: 3%; width: 200px;' class="img-slider" src="{{ podcast.1|get_value_from_dict:'url_of_image_of_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
-                      </a>
-                      <a href="{% url 'pd_backend:podcast_url' podcast.2|get_value_from_dict:'id_of_podcast' %}">
-                         <img style='margin: 3%; width: 200px;' class="img-slider" src="{{ podcast.2|get_value_from_dict:'url_of_image_of_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
-                      </a>
-                          {% endfor %}
-                      </div>
-          </div>
-            {% for podcast in carousel_podcasts %}<div class="carousel-item">
-            <div class="row justify-content-center" >
-                      <a href="{% url 'pd_backend:podcast_url' podcast.0|get_value_from_dict:'id_of_podcast' %}">
-                         <img style='margin: 3%; width: 200px;' class="img-slider" src="{{ podcast.0|get_value_from_dict:'url_of_image_of_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
-                      </a>
-                      <a href="{% url 'pd_backend:podcast_url' podcast.1|get_value_from_dict:'id_of_podcast' %}">
-                         <img style='margin: 3%; width: 200px;' class="img-slider" src="{{ podcast.1|get_value_from_dict:'url_of_image_of_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
-                      </a>
-                      <a href="{% url 'pd_backend:podcast_url' podcast.2|get_value_from_dict:'id_of_podcast' %}">
-                         <img style='margin: 3%; width: 200px;' class="img-slider" src="{{ podcast.2|get_value_from_dict:'url_of_image_of_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
-                      </a>`
-            </div>
-        </div>
-              {% endfor %}
-
-
-        <!-- Элементы управления -->
-        <a class="carousel-control-prev"  href="#carousel" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon " aria-hidden="true"></span>
-          <span class="sr-only" >Предыдущий</span>
-        </a>
-        <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Следующий</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-    {% endif %}
-  <!-- Canals Section -->
-  <section class="page-section portfolio" id="portfolio">
-    <div class="container">
-      <div class="row">
-        {% for podcast in main_podcast %}
-        <div class="col-md-6 col-xl-3 col-lg-4">
-          <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#portfolioModal1">
-              <a href="{% url 'pd_backend:podcast_url' podcast|get_value_from_dict:'id_of_podcast' %}">
-                <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                  <div class="portfolio-item-caption-content text-center text-white">
-                    <p> {{ podcast|get_value_from_dict:'title_of_podcast' }}</p>
+{% block content %}
+  {% if carousel_podcasts and carousel_podcasts_active %}
+    <section class="page-section portfolio d-none  d-xl-block d-lg-block">
+        <div class="container">
+            <div id="carousel" class="carousel slide " data-interval='2000' data-ride="carousel">
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row justify-content-center" >
+                        {% for podcast in carousel_podcasts_active %}
+                            <a href="{% url 'pd_backend:podcast_url' podcast.0|get_value_from_dict:'id_of_podcast' %}">
+                               <img style='margin: 5%; width: 200px;' class="img-slider" src="{{ podcast.0|get_value_from_dict:'url_of_image_of_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
+                            </a>
+                            <a href="{% url 'pd_backend:podcast_url' podcast.1|get_value_from_dict:'id_of_podcast' %}">
+                               <img style='margin: 5%; width: 200px;' class="img-slider" src="{{ podcast.1|get_value_from_dict:'url_of_image_of_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
+                            </a>
+                            <a href="{% url 'pd_backend:podcast_url' podcast.2|get_value_from_dict:'id_of_podcast' %}">
+                               <img style='margin: 5%; width: 200px;' class="img-slider" src="{{ podcast.2|get_value_from_dict:'url_of_image_of_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% for podcast in carousel_podcasts %}
+                <div class="carousel-item">
+                  <div class="row justify-content-center" >
+                            <a href="{% url 'pd_backend:podcast_url' podcast.0|get_value_from_dict:'id_of_podcast' %}">
+                               <img style='margin: 3%; width: 200px;' class="img-slider" src="{{ podcast.0|get_value_from_dict:'url_of_image_of_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
+                            </a>
+                            <a href="{% url 'pd_backend:podcast_url' podcast.1|get_value_from_dict:'id_of_podcast' %}">
+                               <img style='margin: 3%; width: 200px;' class="img-slider" src="{{ podcast.1|get_value_from_dict:'url_of_image_of_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
+                            </a>
+                            <a href="{% url 'pd_backend:podcast_url' podcast.2|get_value_from_dict:'id_of_podcast' %}">
+                               <img style='margin: 3%; width: 200px;' class="img-slider" src="{{ podcast.2|get_value_from_dict:'url_of_image_of_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
+                            </a>
                   </div>
                 </div>
-              </a>
-              <img class="img-fluid" src="{{ podcast|get_value_from_dict:'url_of_image_of_podcast' }}" alt="">
-          </div>
+                {% endfor %}
+                <!-- Элементы управления -->
+                <a class="carousel-control-prev"  href="#carousel" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon " aria-hidden="true"></span>
+                  <span class="sr-only" >Предыдущий</span>
+                </a>
+                <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Следующий</span>
+                </a>
+              </div>
+            </div>
         </div>
-        {% endfor %}
+    </section>
 
+  {% endif %}
+  <!-- Canals Section -->
 
+     {% if main_podcast == 'NotFoundTag' %}
+         <br>
+        <h2 align="center" style="color: grey">Извините, по этому тэгу больше нет подкастов :(</h2>
+    {% else %}
+          <section class="page-section portfolio" id="portfolio">
+              <div class="container">
+                <div class="row">
 
-  </section>
-  <div class="container">
-    <div class="card my-4">
-      <h5 class="card-header">Категории</h5>
-      <div class="card-body">
-        <div class="row">
-          <div class="col col-lg-3 col-md-4 col-sm-2">
-            <ul class="list-unstyled mb-0">
-              <li>
-                <a href="#">Категория 1</a>
-              </li>
-              <li>
-                <a href="#">Категория 2</a>
-              </li>
-            </ul>
-          </div>
-          <div class="col col-lg-3 col-md-4 col-sm-2">
-            <ul class="list-unstyled mb-0">
-              <li>
-                <a href="#">JavaScript</a>
-              </li>
-              <li>
-                <a href="#">CSS</a>
-              </li>
-              <li>
-                <a href="#">Tutorials</a>
-              </li>
-            </ul>
-          </div>
-          <div class="col col-lg-3 col-md-4 col-sm-2">
-            <ul class="list-unstyled mb-0">
-              <li>
-                <a href="#">JavaScript</a>
-              </li>
-              <li>
-                <a href="#">CSS</a>
-              </li>
-              <li>
-                <a href="#">Tutorials</a>
-              </li>
-            </ul>
-          </div>
-          <div class="col col-lg-3 col-md-4 col-sm-2">
-            <ul class="list-unstyled mb-0">
-              <li>
-                <a href="#">JavaScript</a>
-              </li>
-              <li>
-                <a href="#">CSS</a>
-              </li>
-              <li>
-                <a href="#">Tutorials</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+                  {% for podcast in main_podcast %}
+                    <div class="col-6 col-md-6 col-xl-3 col-lg-4">
+                      <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#portfolioModal1">
+                          <a href="{% url 'pd_backend:podcast_url' podcast|get_value_from_dict:'id_of_podcast' %}">
+                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                              <div class="portfolio-item-caption-content text-center text-white">
+                                <p> {{ podcast|get_value_from_dict:'title_of_podcast' }}</p>
+                              </div>
+                            </div>
+                          </a>
+                          <img class="img-fluid" src="{{ podcast|get_value_from_dict:'url_of_image_of_podcast' }}" alt="">
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+          {% if carousel_podcasts_active and carousel_podcasts %}
+              <a href="#"><p class="text-center">Eще</p></a>
+              {% endif %}
+          </section>
+
+    {% endif %}
 
 {% endblock %}

@@ -49,4 +49,10 @@ def series_router(request, podcast_id, series_id):
                       {'series': services.get_series_full_info(podcast_id, series_id)})
 
 
+
+def tag_search(request, tag_id):
+    services.search_tag(tag_id)
+    return render(request, 'pd_backend/index.html',
+                  {'main_podcast': services.search_tag(tag_id)})
+
 # Create your views here.

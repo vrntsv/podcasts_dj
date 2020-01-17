@@ -2,7 +2,7 @@
 
 {% load djutils %}
 {% block title %}
-   <title> {{ series.0|get_value_from_dict:'title_of_audio' }} </title>
+    {{ series.0|get_value_from_dict:'title_of_audio' }}
 {% endblock %}
 
 {% block content %}

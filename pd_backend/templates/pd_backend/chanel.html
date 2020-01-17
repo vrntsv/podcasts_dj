@@ -1,12 +1,11 @@
 {% extends 'pd_backend/base.html' %}
-{% block content %}
     {% load djutils %}
+
     {% block title %}
         {{ podcast.0|get_value_from_dict:'title_of_podcast' }} - {{ podcast.0|get_value_from_dict:'author_of_podcast' }} - каталог tgpodcasts
     {% endblock %}
-    {% block description %}
-        Online каталог подкастов на русском tgpodcasts: слушать подкаст {{ podcast.0|get_value_from_dict:'title_of_podcast' }}
-        {% endblock %}
+{% block content %}
+
   <section class="page-section portfolio" >
     <div class="row">
       <div class="col col-sm-12 col-md-6 col-xl-6">
