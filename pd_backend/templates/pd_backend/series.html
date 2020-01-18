@@ -19,7 +19,9 @@
             </audio>
           </div>
           <div class="card-footer">
-              <p>{{ series.0|get_value_from_dict:'description_of_audio' }}</p>
+              {% if series.0|get_value_from_dict:'description_of_audio' %}
+                 <p>{{ series.0|get_value_from_dict:'description_of_audio' }}</p>
+              {% endif %}
           </div>
         </div>
       </div>
