@@ -29,29 +29,31 @@ def get_podcasts_for_carousel_active(): # должно делиться на т�
     return pod_list
 
 
-def get_podcast_full_info(id, return_podcast=False, return_tags=False, return_series=False):
+def get_podcast_full_info(id, return_podcast=False, return_cat=False, return_series=False):
     podcast = models.Podcasts.objects.all().filter(id_of_podcast=id).values()
     if return_podcast:
         return podcast
     series = models.Items.objects.all().filter(id_of_podcast=id).values()
     if return_series:
         return series
-    tags_podcast = []
-    keywords_ids_podcast = models.PodcastsWithKeywords.objects.all().filter(id_of_podcast=id).values('id_of_keyword')
-    for id in keywords_ids_podcast:
-        print(id['id_of_keyword'])
-        tag = models.Keywords.objects.all().filter(id_of_keyword=int(id['id_of_keyword'])).values()
+    cat_podcast = []
+    cat_ids = models.PodcastsWithCategorys.objects.all().filter(id_of_podcast=id).values('id_of_category')
+    for id in cat_ids:
+        print(id['id_of_category'])
+        tag = models.Categorys.objects.all().filter(id_of_category=int(id['id_of_category'])).values()
         try:
-            tags_podcast.append(
+            cat_podcast.append(
                 {
-                    'id_of_keyword': tag[0]['id_of_keyword'],
-                    'title_of_keyword': tag[0]['title_of_keyword']
+                    'id_of_category': tag[0]['id_of_category'],
+                    'title_of_category': tag[0]['title_of_category']
+
+
                 }
                 )
         except Exception:
             print('err')
-    if return_tags:
-        return tags_podcast
+    if return_cat:
+        return cat_podcast
 
 
 def search_podcasts(search_str):
@@ -61,15 +63,15 @@ def search_podcasts(search_str):
     return podcasts
 
 
-def search_tag(tag_id):
-    podcast_ids = models.PodcastsWithKeywords.objects.filter(id_of_keyword=tag_id).values('id_of_podcast')
+def search_category(tag_id):
+    podcast_ids = models.PodcastsWithCategorys.objects.filter(id_of_category=tag_id).values('id_of_podcast')
     if podcast_ids.__len__() > 1:
         podcasts = []
         for id in podcast_ids:
             podcasts.append(models.Podcasts.objects.filter(id_of_podcast=id['id_of_podcast']).values()[0])
         return podcasts
     else:
-        return 'NotFoundTag'
+        return 'NotFoundCat'
 
 
 def get_series_full_info(podcast_id, series_id):

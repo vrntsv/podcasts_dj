@@ -17,9 +17,10 @@
 
           </div>
           <div class="card-footer">
-          {% if tags %}
-              {% for tag in tags %}
-                <a href="{% url "pd_backend:tag_url" tag|get_value_from_dict:'id_of_keyword' %}"> #{{ tag|get_value_from_dict:'title_of_keyword' }}</a>
+          {% if categories %}
+              <h5 style="color: grey">Категории: </h5>
+              {% for category in categories %}
+                <a href="{% url "pd_backend:cat_url" category|get_value_from_dict:'id_of_category' %}"> {{ category|get_value_from_dict:'title_of_category' }}    </a>
               {% endfor %}
           {% endif %}
           </div>

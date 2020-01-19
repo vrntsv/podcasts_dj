@@ -2,6 +2,16 @@
 {% load static %}
 {% load djutils %}
 
+{% if search_data %}
+    {% block searchbar %}
+      <div class="container">
+      <form action="{% url 'pd_backend:index_url' %}" method="post">
+          {% csrf_token %}
+        <input style="width: 100%; margin-top: 5%" name="search_data" class="btn finder" type="text" value="{{ search_data }}" placeholder='Введи сюда что-то ...'>
+      </form>
+  </div>
+    {% endblock %}
+{% endif %}
 {% block content %}
   {% if carousel_podcasts and carousel_podcasts_active %}
     <section class="page-section portfolio d-none  d-xl-block d-lg-block">
@@ -55,35 +65,58 @@
   {% endif %}
   <!-- Canals Section -->
 
-     {% if main_podcast == 'NotFoundTag' %}
+     {% if main_podcast == 'NotFoundCat' %}
          <br>
         <h2 align="center" style="color: grey">Извините, по этому тэгу больше нет подкастов :(</h2>
     {% else %}
-          <section class="page-section portfolio" id="portfolio">
-              <div class="container">
-                <div class="row">
+                  <section class="page-section portfolio " id="portfolio">
+                      <div class="container infinite-container">
 
-                  {% for podcast in main_podcast %}
-                    <div class="col-6 col-md-6 col-xl-3 col-lg-4">
-                      <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#portfolioModal1">
-                          <a href="{% url 'pd_backend:podcast_url' podcast|get_value_from_dict:'id_of_podcast' %}">
-                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                              <div class="portfolio-item-caption-content text-center text-white">
-                                <p> {{ podcast|get_value_from_dict:'title_of_podcast' }}</p>
-                              </div>
-                            </div>
-                          </a>
-                          <img class="img-fluid" src="{{ podcast|get_value_from_dict:'url_of_image_of_podcast' }}" alt="">
-                      </div>
-                    </div>
-                  {% endfor %}
-                </div>
-              </div>
-          {% if carousel_podcasts_active and carousel_podcasts %}
-              <a href="#"><p class="text-center">Eще</p></a>
-              {% endif %}
-          </section>
+                        <div class="row infinite-item">
+                              {% for podcast in main_podcast %}
+                                <div class="col-6 col-md-6 col-xl-3 col-lg-4">
+                                      <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#portfolioModal1">
+                                          <a href="{% url 'pd_backend:podcast_url' podcast|get_value_from_dict:'id_of_podcast' %}">
+                                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                                              <div class="portfolio-item-caption-content text-center text-white">
+                                                <p > {{ podcast|get_value_from_dict:'title_of_podcast' }}</p>
+                                              </div>
+                                            </div>
+                                          </a>
+                                          <img class="img-fluid" src="{{ podcast|get_value_from_dict:'url_of_image_of_podcast' }}" alt="">
+                                          {% if not carousel_podcasts  %}
+                                          <div class="card-footer">
+                                          {% if search_data|lower in podcast|get_value_from_dict:'title_of_podcast'|lower%}
+                                              название
+                                              {% elif search_data|lower in podcast|get_value_from_dict:'description_of_podcast'|lower %}
+                                              описание
+                                              {% elif search_data|lower in podcast|get_value_from_dict:'author_of_podcast'|lower %}
+                                              автор
+                                              {% endif %}
+                                             </div>
+                                          {% endif %}
+                                          </div>
+
+
+
+                                  </div>
+                              {% endfor %}
+                        </div>
+                        </div>
+                  </section>
+
+
 
     {% endif %}
+      {% if main_podcast.has_next %}
+             <a class="infinite-more-link" href="?page={{ main_podcast.next_page_number }}">More</a>
+        {% endif %}
+      <div class="loading" style="display: none;">
+    Loading...
+  </div>
+
+
+
+
 
 {% endblock %}
