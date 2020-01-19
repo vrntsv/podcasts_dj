@@ -3,7 +3,6 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from . import services
 from . import models
-from el_pagination.decorators import page_template
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 

@@ -21,14 +21,14 @@
                 <div class="carousel-item active">
                     <div class="row justify-content-center" >
                         {% for podcast in carousel_podcasts_active %}
-                            <a href="{% url 'pd_backend:podcast_url' podcast.0|get_value_from_dict:'id_of_podcast' %}">
-                               <img style='margin: 5%; width: 200px;' class="img-slider" src="{{ podcast.0|get_value_from_dict:'url_of_image_of_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
+                            <a href="{% url 'pd_backend:podcast_url' podcast.0|get_value_from_dict:'id_podcast' %}">
+                               <img style='margin: 5%; width: 200px;' class="img-slider" src="{{ podcast.0|get_value_from_dict:'url_image_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
                             </a>
-                            <a href="{% url 'pd_backend:podcast_url' podcast.1|get_value_from_dict:'id_of_podcast' %}">
-                               <img style='margin: 5%; width: 200px;' class="img-slider" src="{{ podcast.1|get_value_from_dict:'url_of_image_of_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
+                            <a href="{% url 'pd_backend:podcast_url' podcast.1|get_value_from_dict:'id_podcast' %}">
+                               <img style='margin: 5%; width: 200px;' class="img-slider" src="{{ podcast.1|get_value_from_dict:'url_image_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
                             </a>
-                            <a href="{% url 'pd_backend:podcast_url' podcast.2|get_value_from_dict:'id_of_podcast' %}">
-                               <img style='margin: 5%; width: 200px;' class="img-slider" src="{{ podcast.2|get_value_from_dict:'url_of_image_of_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
+                            <a href="{% url 'pd_backend:podcast_url' podcast.2|get_value_from_dict:'id_podcast' %}">
+                               <img style='margin: 5%; width: 200px;' class="img-slider" src="{{ podcast.2|get_value_from_dict:'url_image_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
                             </a>
                         {% endfor %}
                     </div>
@@ -36,14 +36,14 @@
                 {% for podcast in carousel_podcasts %}
                 <div class="carousel-item">
                   <div class="row justify-content-center" >
-                            <a href="{% url 'pd_backend:podcast_url' podcast.0|get_value_from_dict:'id_of_podcast' %}">
-                               <img style='margin: 3%; width: 200px;' class="img-slider" src="{{ podcast.0|get_value_from_dict:'url_of_image_of_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
+                            <a href="{% url 'pd_backend:podcast_url' podcast.0|get_value_from_dict:'id_podcast' %}">
+                               <img style='margin: 3%; width: 200px;' class="img-slider" src="{{ podcast.0|get_value_from_dict:'url_image_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
                             </a>
-                            <a href="{% url 'pd_backend:podcast_url' podcast.1|get_value_from_dict:'id_of_podcast' %}">
-                               <img style='margin: 3%; width: 200px;' class="img-slider" src="{{ podcast.1|get_value_from_dict:'url_of_image_of_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
+                            <a href="{% url 'pd_backend:podcast_url' podcast.1|get_value_from_dict:'id_podcast' %}">
+                               <img style='margin: 3%; width: 200px;' class="img-slider" src="{{ podcast.1|get_value_from_dict:'url_image_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
                             </a>
-                            <a href="{% url 'pd_backend:podcast_url' podcast.2|get_value_from_dict:'id_of_podcast' %}">
-                               <img style='margin: 3%; width: 200px;' class="img-slider" src="{{ podcast.2|get_value_from_dict:'url_of_image_of_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
+                            <a href="{% url 'pd_backend:podcast_url' podcast.2|get_value_from_dict:'id_podcast' %}">
+                               <img style='margin: 3%; width: 200px;' class="img-slider" src="{{ podcast.2|get_value_from_dict:'url_image_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
                             </a>
                   </div>
                 </div>
@@ -76,21 +76,21 @@
                               {% for podcast in main_podcast %}
                                 <div class="col-6 col-md-6 col-xl-3 col-lg-4">
                                       <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#portfolioModal1">
-                                          <a href="{% url 'pd_backend:podcast_url' podcast|get_value_from_dict:'id_of_podcast' %}">
+                                          <a href="{% url 'pd_backend:podcast_url' podcast|get_value_from_dict:'id_podcast' %}">
                                             <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                               <div class="portfolio-item-caption-content text-center text-white">
-                                                <p > {{ podcast|get_value_from_dict:'title_of_podcast' }}</p>
+                                                <p > {{ podcast|get_value_from_dict:'title_podcast' }}</p>
                                               </div>
                                             </div>
                                           </a>
-                                          <img class="img-fluid" src="{{ podcast|get_value_from_dict:'url_of_image_of_podcast' }}" alt="">
+                                          <img class="img-fluid" src="{{ podcast|get_value_from_dict:'url_image_podcast' }}" alt="">
                                           {% if not carousel_podcasts  %}
                                           <div class="card-footer">
-                                          {% if search_data|lower in podcast|get_value_from_dict:'title_of_podcast'|lower%}
+                                          {% if search_data|lower in podcast|get_value_from_dict:'title_podcast'|lower%}
                                               название
-                                              {% elif search_data|lower in podcast|get_value_from_dict:'description_of_podcast'|lower %}
+                                              {% elif search_data|lower in podcast|get_value_from_dict:'description_podcast'|lower %}
                                               описание
-                                              {% elif search_data|lower in podcast|get_value_from_dict:'author_of_podcast'|lower %}
+                                              {% elif search_data|lower in podcast|get_value_from_dict:'author_podcast'|lower %}
                                               автор
                                               {% endif %}
                                              </div>

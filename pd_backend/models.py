@@ -9,17 +9,17 @@ from django.db import models
 
 
 class CatOfItem(models.Model):
-    id_of_item = models.SmallIntegerField(primary_key=True)
-    title_of_category = models.TextField()
+    id_item = models.SmallIntegerField(primary_key=True)
+    title_category = models.TextField()
 
     class Meta:
         managed = False
-        db_table = 'cat_of_item'
+        db_table = 'cat_item'
 
 
 class Categorys(models.Model):
-    id_of_category = models.SmallIntegerField(primary_key=True)
-    title_of_category = models.TextField()
+    id_category = models.SmallIntegerField(primary_key=True)
+    title_category = models.TextField()
 
     class Meta:
         managed = False
@@ -27,14 +27,14 @@ class Categorys(models.Model):
 
 
 class Items(models.Model):
-    id_of_podcast = models.IntegerField()
-    title_of_audio = models.TextField()
-    description_of_audio = models.TextField(blank=True, null=True)
+    id_podcast = models.IntegerField()
+    title_audio = models.TextField()
+    description_audio = models.TextField(blank=True, null=True)
     audio = models.TextField()
-    image_of_audio = models.TextField(blank=True, null=True)
-    pubdata_of_audio = models.DateTimeField(blank=True, null=True)
-    duration_of_audio = models.TimeField(blank=True, null=True)
-    id_of_item = models.AutoField(primary_key=True)
+    image_audio = models.TextField(blank=True, null=True)
+    pubdata_audio = models.DateTimeField(blank=True, null=True)
+    duration_audio = models.TimeField(blank=True, null=True)
+    id_item = models.AutoField(primary_key=True)
 
     class Meta:
         managed = False
@@ -42,8 +42,8 @@ class Items(models.Model):
 
 
 class ItemsWithKeywords(models.Model):
-    id_of_item = models.IntegerField()
-    id_of_keyword = models.SmallIntegerField()
+    id_item = models.IntegerField()
+    id_keyword = models.SmallIntegerField()
 
     class Meta:
         managed = False
@@ -51,8 +51,8 @@ class ItemsWithKeywords(models.Model):
 
 
 class Keywords(models.Model):
-    id_of_keyword = models.AutoField(primary_key=True)
-    title_of_keyword = models.TextField()
+    id_keyword = models.AutoField(primary_key=True)
+    title_keyword = models.TextField()
 
     class Meta:
         managed = False
@@ -60,20 +60,20 @@ class Keywords(models.Model):
 
 
 class KeywordsOfItems(models.Model):
-    id_of_keyword_of_item = models.SmallIntegerField(primary_key=True)
-    title_of_keyword = models.TextField()
+    id_keyword_item = models.SmallIntegerField(primary_key=True)
+    title_keyword = models.TextField()
 
     class Meta:
         managed = False
-        db_table = 'keywords_of_items'
+        db_table = 'keywords_items'
 
 
 class Podcasts(models.Model):
-    title_of_podcast = models.TextField()
-    description_of_podcast = models.TextField(blank=True, null=True)
-    url_of_image_of_podcast = models.TextField()
-    author_of_podcast = models.TextField(blank=True, null=True)
-    id_of_podcast = models.AutoField(primary_key=True)
+    title_podcast = models.TextField()
+    description_podcast = models.TextField(blank=True, null=True)
+    url_image_podcast = models.TextField()
+    author_podcast = models.TextField(blank=True, null=True)
+    id_podcast = models.AutoField(primary_key=True)
 
     class Meta:
         managed = False
@@ -81,8 +81,8 @@ class Podcasts(models.Model):
 
 
 class PodcastsWithCategorys(models.Model):
-    id_of_podcast = models.IntegerField()
-    id_of_category = models.SmallIntegerField()
+    id_podcast = models.IntegerField()
+    id_category = models.SmallIntegerField()
 
     class Meta:
         managed = False
@@ -90,8 +90,8 @@ class PodcastsWithCategorys(models.Model):
 
 
 class PodcastsWithKeywords(models.Model):
-    id_of_podcast = models.IntegerField()
-    id_of_keyword = models.IntegerField()
+    id_podcast = models.IntegerField()
+    id_keyword = models.IntegerField()
 
     class Meta:
         managed = False
@@ -99,27 +99,27 @@ class PodcastsWithKeywords(models.Model):
 
 
 class SubcatOfItem(models.Model):
-    id_of_item = models.SmallIntegerField()
-    title_of_subcategory = models.TextField()
+    id_item = models.SmallIntegerField()
+    title_subcategory = models.TextField()
 
     class Meta:
         managed = False
-        db_table = 'subcat_of_item'
+        db_table = 'subcat_item'
 
 
 class SubcatOfPodcast(models.Model):
-    id_of_podcast = models.IntegerField()
-    title_of_subcat = models.TextField()
+    id_podcast = models.IntegerField()
+    title_subcat = models.TextField()
 
     class Meta:
         managed = False
-        db_table = 'subcat_of_podcast'
+        db_table = 'subcat_podcast'
 
 
 class UrlOfPodcasts(models.Model):
-    url_of_podcast = models.TextField()
-    status_of_podcast = models.IntegerField()
+    url_podcast = models.TextField()
+    status_podcast = models.IntegerField()
 
     class Meta:
         managed = False
-        db_table = 'url_of_podcasts'
+        db_table = 'url_podcasts'

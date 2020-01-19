@@ -2,7 +2,7 @@
     {% load djutils %}
 
     {% block title %}
-        {{ podcast.0|get_value_from_dict:'title_of_podcast' }} - {{ podcast.0|get_value_from_dict:'author_of_podcast' }} - каталог tgpodcasts
+        {{ podcast.0|get_value_from_dict:'title_podcast' }} - {{ podcast.0|get_value_from_dict:'author_podcast' }} - каталог tgpodcasts
     {% endblock %}
 {% block content %}
 
@@ -10,17 +10,17 @@
     <div class="row">
       <div class="col col-sm-12 col-md-6 col-xl-6">
         <div class="card my-2" style="max-width: 700px;">
-          <img class="card-img-top"  src="{{ podcast.0|get_value_from_dict:'url_of_image_of_podcast' }}" alt="Card image">
+          <img class="card-img-top"  src="{{ podcast.0|get_value_from_dict:'url_image_podcast' }}" alt="Card image">
           <div class="card-body ">
-            <h2 class="card-title"> {{ podcast.0|get_value_from_dict:'title_of_podcast' }}</h2>
-                <p>{{ podcast.0|get_value_from_dict:'description_of_podcast' }}</p>
+            <h2 class="card-title"> {{ podcast.0|get_value_from_dict:'title_podcast' }}</h2>
+                <p>{{ podcast.0|get_value_from_dict:'description_podcast' }}</p>
 
           </div>
           <div class="card-footer">
           {% if categories %}
               <h5 style="color: grey">Категории: </h5>
               {% for category in categories %}
-                <a href="{% url "pd_backend:cat_url" category|get_value_from_dict:'id_of_category' %}"> {{ category|get_value_from_dict:'title_of_category' }}    </a>
+                <a href="{% url "pd_backend:cat_url" category|get_value_from_dict:'id_category' %}"> {{ category|get_value_from_dict:'title_category' }}    </a>
               {% endfor %}
           {% endif %}
           </div>
@@ -31,18 +31,18 @@
           {% for s in series %}
           <div class="card my-2">
             <div class="card-body ">
-                <a href="{% url 'pd_backend:series_url' s|get_value_from_dict:'id_of_podcast' s|get_value_from_dict:'id_of_item'%}"><h2 class="card-title">{{ s|get_value_from_dict:'title_of_audio' }}</h2></a>
-                {% if s|get_value_from_dict:'description_of_audio'%}
-                    {% if s|get_value_from_dict:'description_of_audio'|length < 255 %}
+                <a href="{% url 'pd_backend:series_url' s|get_value_from_dict:'id_podcast' s|get_value_from_dict:'id_item'%}"><h2 class="card-title">{{ s|get_value_from_dict:'title_audio' }}</h2></a>
+                {% if s|get_value_from_dict:'description_audio'%}
+                    {% if s|get_value_from_dict:'description_audio'|length < 255 %}
 
-                        <p>{{ s|get_value_from_dict:'description_of_audio' }}</p>
+                        <p>{{ s|get_value_from_dict:'description_audio' }}</p>
                     {% else %}
-                        <p>{{ s|get_value_from_dict:'description_of_audio'|truncatechars_html:255}}</p>
+                        <p>{{ s|get_value_from_dict:'description_audio'|truncatechars_html:255}}</p>
                     {% endif %}
                 {% endif %}
             </div>
             <div class="card-footer">
-              <p>Продолжительность: {{ s|get_value_from_dict:'duration_of_audio'|rjust:"10"}}</p>
+              <p>Продолжительность: {{ s|get_value_from_dict:'duration_audio'|rjust:"10"}}</p>
             </div>
           </div>
           {% endfor %}
