@@ -81,29 +81,29 @@ TEMPLATES = [
 
 
 
-# #Database
-# #https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-# DATABASES = {
-#   'default': {
-#       'ENGINE': 'django.db.backends.mysql',
-#       'NAME': 'podcasts_parser',
-#       'USER': 'admin',
-#       'PASSWORD': 'admin',
-#       'HOST': '/Applications/MAMP/tmp/mysql/mysql.sock',
-#       'PORT': '8888',
-#   }
-# }
-
+#Database
+#https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'podcasts_parser',
-        'USER': 'botoland',
-        'PASSWORD': '1707',
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
-    }
+  'default': {
+      'ENGINE': 'django.db.backends.mysql',
+      'NAME': 'podcasts_parser',
+      'USER': 'admin',
+      'PASSWORD': 'admin',
+      'HOST': '/Applications/MAMP/tmp/mysql/mysql.sock',
+      'PORT': '8888',
+  }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'podcasts_parser',
+#         'USER': 'botoland',
+#         'PASSWORD': '1707',
+#         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+#         'PORT': '3306',
+#     }
+# }
 
 
 

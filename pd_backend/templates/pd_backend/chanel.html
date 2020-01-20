@@ -13,7 +13,7 @@
           <img class="card-img-top"  src="{{ podcast.0|get_value_from_dict:'url_image_podcast' }}" alt="Card image">
           <div class="card-body ">
             <h2 class="card-title"> {{ podcast.0|get_value_from_dict:'title_podcast' }}</h2>
-                <p>{{ podcast.0|get_value_from_dict:'description_podcast' }}</p>
+                <p>{{ podcast.0|get_value_from_dict:'description_podcast'|linebreaks }}</p>
 
           </div>
           <div class="card-footer">
@@ -35,9 +35,9 @@
                 {% if s|get_value_from_dict:'description_audio'%}
                     {% if s|get_value_from_dict:'description_audio'|length < 255 %}
 
-                        <p>{{ s|get_value_from_dict:'description_audio' }}</p>
+                        <p>{{ s|get_value_from_dict:'description_audio'|linebreaks  }}</p>
                     {% else %}
-                        <p>{{ s|get_value_from_dict:'description_audio'|truncatechars_html:255}}</p>
+                        <p>{{ s|get_value_from_dict:'description_audio'|truncatechars_html:255|linebreaks }}</p>
                     {% endif %}
                 {% endif %}
             </div>
