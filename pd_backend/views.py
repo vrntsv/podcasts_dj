@@ -12,7 +12,7 @@ def index_router(request):
     if request.method == 'GET':
         main_podcast = services.get_main_podcasts()
         page = request.GET.get('page', 1)
-        print('125', page)
+        print(services.get_cats_pd_id())
         paginator = Paginator(main_podcast, 20)
         try:
             main_podcast = paginator.page(page)
@@ -63,8 +63,13 @@ def series_router(request, podcast_id, series_id):
 
 
 def category_search_router(request, category_id):
-    services.search_category(category_id)
+    print(services.get_cats_pd_id())
     return render(request, 'pd_backend/index.html',
-                  {'main_podcast': services.search_category(category_id)})
+                  {
+                      'main_podcast': services.search_category(category_id),
+                      'cats_by_id': services.get_cats_pd_id(),
+                      'searched_cat_id': category_id
+                   }
+                  )
 
 # Create your views here.

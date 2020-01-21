@@ -74,5 +74,27 @@ def search_category(tag_id):
         return 'NotFoundCat'
 
 
+def get_cats_pd_id():
+    data = {}
+    podcasts = models.PodcastsWithCategorys.objects.all().values()
+    print(podcasts)
+    for p in podcasts:
+        if p['id_podcast'] in data.keys():
+            data[p['id_podcast']].update(
+                {
+                    p['id_category']:
+                models.Categorys.objects.all().filter(id_category=p['id_category']).values()[0]['title_category']
+                }
+            )
+        else:
+            data.update({
+                p['id_podcast']: {
+                    p['id_category']:
+                    models.Categorys.objects.all().filter(id_category=p['id_category']).values()[0]['title_category']
+                }
+            })
+    return data
+
+
 def get_series_full_info(podcast_id, series_id):
     return models.Items.objects.all().filter(id_podcast=podcast_id, id_item=series_id).values()

@@ -199,7 +199,7 @@ class Podcasts(models.Model):
 
 
 class PodcastsWithCategorys(models.Model):
-    id_podcast = models.IntegerField()
+    id_podcast = models.IntegerField(primary_key=True)
     id_category = models.SmallIntegerField()
 
     class Meta:

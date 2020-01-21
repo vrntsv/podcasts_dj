@@ -1,7 +1,7 @@
 {% extends 'pd_backend/base.html' %}
 {% load static %}
 {% load djutils %}
-
+{% load custom_filters %}
 {% if search_data %}
     {% block searchbar %}
       <div class="container">
@@ -22,13 +22,13 @@
                     <div class="row justify-content-center" >
                         {% for podcast in carousel_podcasts_active %}
                             <a href="{% url 'pd_backend:podcast_url' podcast.0|get_value_from_dict:'id_podcast' %}">
-                               <img style='margin: 5%; width: 200px;' class="img-slider" src="{{ podcast.0|get_value_from_dict:'url_image_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
+                               <img style='padding: 5%; width: 200px;' class="img-slider" src="{{ podcast.0|get_value_from_dict:'url_image_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
                             </a>
                             <a href="{% url 'pd_backend:podcast_url' podcast.1|get_value_from_dict:'id_podcast' %}">
-                               <img style='margin: 5%; width: 200px;' class="img-slider" src="{{ podcast.1|get_value_from_dict:'url_image_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
+                               <img style='padding: 5%; width: 200px;' class="img-slider" src="{{ podcast.1|get_value_from_dict:'url_image_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
                             </a>
                             <a href="{% url 'pd_backend:podcast_url' podcast.2|get_value_from_dict:'id_podcast' %}">
-                               <img style='margin: 5%; width: 200px;' class="img-slider" src="{{ podcast.2|get_value_from_dict:'url_image_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
+                               <img style='padding: 5%; width: 200px;' class="img-slider" src="{{ podcast.2|get_value_from_dict:'url_image_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
                             </a>
                         {% endfor %}
                     </div>
@@ -84,17 +84,35 @@
                                             </div>
                                           </a>
                                           <img class="img-fluid" src="{{ podcast|get_value_from_dict:'url_image_podcast' }}" alt="">
+
                                           {% if not carousel_podcasts  %}
                                           <div class="card-footer">
-                                          {% if search_data|lower in podcast|get_value_from_dict:'title_podcast'|lower%}
-                                              название
-                                              {% elif search_data|lower in podcast|get_value_from_dict:'description_podcast'|lower %}
-                                              описание
-                                              {% elif search_data|lower in podcast|get_value_from_dict:'author_podcast'|lower %}
-                                              автор
-                                              {% endif %}
+                                                  {% if search_data|lower in podcast|get_value_from_dict:'title_podcast'|lower%}
+                                                        <text style="color: grey">Название: </text>{{ podcast|get_value_from_dict:'title_podcast'|highlight:search_data}}
+                                                      {% elif search_data|lower in podcast|get_value_from_dict:'description_podcast'|lower %}
+                                                        <text style="color: grey">Описание: </text>{{ podcast|get_value_from_dict:'description_podcast'|highlight:search_data}}
+                                                      {% elif search_data|lower in podcast|get_value_from_dict:'author_podcast'|lower %}
+                                                        <text style="color: grey">Автор: </text>{{ podcast|get_value_from_dict:'author_podcast'|highlight:search_data}}
+                                                      {% endif %}
+                                              {% if cats_by_id %}
+                                                  {% with pd_id=podcast|get_value_from_dict:'id_podcast' %}
+                                                            <text style="color: grey">Категории: </text>
+                                                            {%  with data=cats_by_id|get_value_from_dict:pd_id  %}
+                                                            {% for id, name in data.items %}
+                                                                {% if id == searched_cat_id %}
+                                                                <a href="/category?{{ id }}" style="background-color: #FFFF00"> {{ name }}</a> <text>  </text>
+                                                                {% else %}
+                                                                    <a href="/category?{{ id }}" > {{ name }} </a> <text>  </text>
+
+                                                                {% endif %}
+                                                                {% endfor %}
+                                                            {% endwith %}
+
+                                                     {% endwith %}
+                                            {% endif %}
                                              </div>
                                           {% endif %}
+
                                           </div>
 
 
