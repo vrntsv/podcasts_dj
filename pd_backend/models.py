@@ -242,3 +242,6 @@ class UrlPodcasts(models.Model):
     class Meta:
         managed = False
         db_table = 'url_podcasts'
+
+        verbose_name = 'Ссылки на подкасты'
+        verbose_name_plural = 'Ссылки на подкасты'
