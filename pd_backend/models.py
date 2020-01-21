@@ -236,7 +236,7 @@ class SubcatPodcast(models.Model):
 
 class UrlPodcasts(models.Model):
     url_podcast = models.TextField(verbose_name="Ссылка на подкаст")
-    status_podcast = models.IntegerField(default=2)
+    status_podcast = models.IntegerField(default=1)
     id = models.AutoField(primary_key=True)
 
     class Meta:
