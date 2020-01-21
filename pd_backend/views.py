@@ -64,11 +64,13 @@ def series_router(request, podcast_id, series_id):
 
 def category_search_router(request, category_id):
     print(services.get_cats_pd_id())
+
     return render(request, 'pd_backend/index.html',
                   {
                       'main_podcast': services.search_category(category_id),
                       'cats_by_id': services.get_cats_pd_id(),
-                      'searched_cat_id': category_id
+                      'searched_cat_id': category_id,
+                      'searched_cat_name': services.get_cat_name_by_id(category_id)
                    }
                   )
 

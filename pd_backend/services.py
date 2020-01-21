@@ -96,5 +96,9 @@ def get_cats_pd_id():
     return data
 
 
+def get_cat_name_by_id(cat_id):
+    return models.Categorys.objects.filter(id_category=cat_id).values()[0]['title_category']
+
+
 def get_series_full_info(podcast_id, series_id):
     return models.Items.objects.all().filter(id_podcast=podcast_id, id_item=series_id).values()
