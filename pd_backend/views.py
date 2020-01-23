@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from . import services
 from . import models
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
-
+def index_redirect(request):
+    return HttpResponseRedirect('ru')
 
 def index_router(request):
     if request.method == 'GET':
