@@ -2,12 +2,10 @@ import re
 
 
 def check_on_shit(string):      # чистим полученные строки от говна, типа сидата или спецсимволы хтмл
-    if string.find('&') > -1:
+    if string.find('&#') > -1:
         string = encode_from_html(string)
     if string.find('<![CDATA[') > -1:   # чистим строку от cdata
         string = string[string.find('<![CDATA[') + 9: string.find(']]>')]
-    if string.find('&lt') > -1:
-        string = clear_from_decor(string)
     string = clear_from_tags(string)
     return string
 
@@ -26,49 +24,62 @@ def encode_from_html(string):   # перекодировка из html симв�
     return string
 
 
-def clear_from_decor(string):   # чистим от плохой рссленты (c декором которая)
-    while string.startswith('&lt;'):    # чистим от тега lt(он обычно всё инициирует, таблицы, картинки)
-        string = string[string.find('&gt;') + 4:]
-    while string.find('&lt;') > -1:     # опять таки чистим от него же но уже не в начале текста
-        string = string[:string.find('&lt;')] + '\n' + string[string.find('&gt;') + 4:]
-    return string
-
-
 def clear_from_tags(string):
-    # print('====================================\n')
-    # print(string)
-    if string.find('<p') > -1:
-        temp_str = string[string.find('<p'):]
-        string = string.replace(temp_str[:temp_str.find('>') + 1], '')
-    if string.find('<br />') > -1:
-        string = string.replace('<br />', '')
-    if string.find('<a href="') > -1:
-        if string.find('<a href="') == 0:
-            string = string[string.find('">') + 2:] + ' '
-        else:
-            string = string[:string.find('<a href')] + string[string.find('">') + 2:] + ' '
+    if re.search(r'&lt;|&gt;|quot;', string):
+        string = string.replace('&lt;', '<').replace('&gt;', '>').replace('&quot;', '"')
+    if re.search(r"</?p[^</]*>", string) is not None:
+        string = re.sub(r"</?p[^</]*>", '\n', string)
+    if re.search(r"<['/', ' ']{0,2}br['/', ' ']{0,2}>", string) is not None:
+        string = re.sub(r"<['/', ' ']{0,2}br['/', ' ']{0,2}>", '\n', string)
     if string.find('<strong>') > -1:
-        string = string.replace('<strong>', '')
-    if string.find('<span') > -1:
-        temp_str = string[string.find('<span'):]
-        string = string.replace(temp_str[:temp_str.find('>') + 1], '')
+        string = string.replace('<strong>', '').replace('</strong>', '')
+    while string.find('<a') > -1:
+        temp_str = string[string.find('<a'):string.find('</a>') + 4]
+        if len(temp_str) < 2:   # кастыль, ну а что сделаешь
+            break
+        url = temp_str[temp_str.find(re.search(r'href\s?=\s?"', string, flags=re.IGNORECASE).group()) + len(re.search(r'href\s?=\s?"', string, flags=re.IGNORECASE).group()):]
+        url = url[:url.find('"')]   # тупо ссылка которая в href
+        content = temp_str[temp_str.find('>') + 1:temp_str.find('</a>')]    # контент котоорый в теле тега <a>
+        if content == url:
+            string = string.replace(temp_str, ' ' + url)
+        else:
+            string = string.replace(temp_str, ' ' + url + ' - ' + content)
+    if re.search(r"<span[^</]*>", string) is not None:
+        for i in re.findall(r"</?span[^</]*>", string):
+            # print(i)
+            string = string.replace(i, ' ')
     if string.find('<ul>') > -1:
-        string = string.replace('<ul>', '\n')
-        string = string.replace('<li>', '\n')
+        string = re.sub(r"<(/?ul)>", '', string)
     if string.find('<ol>') > -1:
-        string = string.replace('<ol>', '\n')
-        string = string.replace('<li>', '\n')
+        string = re.sub(r"<(/?ol)>", '', string)
+    if re.search(r"</?li.*>", string) is not None:
+        string = re.sub(r"</?li.*>", '\n', string)
     if string.find('<u>') > -1:
-        string = string.replace('<u>', '')
+        string = re.sub(r"</?u>", '', string)
+    if re.search(r"<['/', ' ']{0,2}hr['/', ' ']{0,2}>", string) is not None:
+        string = re.sub(r"<['/', ' ']{0,2}hr['/', ' ']{0,2}>", '\n', string)
     if string.find('<div') > -1:
-        temp_str = string[string.find('<div'):]
-        string = string.replace(temp_str[:temp_str.find('>') + 1], '')
-    # print(string)
-    # print('\n====================================')
-    return string
+        string = re.sub(r"<div.*</div>", '', string)
+    if re.search(r"<img.*/>", string) is not None:
+        string = re.sub(r"<img.*/>", '', string)
+    if re.search(r"<h.>", string) is not None:
+        string = re.sub(r"</?h.>", '', string)
+    if re.search(r"</?b>", string) is not None:
+        string = re.sub(r"</?b>", '', string)
+    if re.search(r"<(/?tr|/?td)>", string) is not None:
+        string = re.sub(r"<(/?tr|/?td)>", '', string)
+    if re.search(r"</?table.*>", string) is not None:
+        string = re.sub(r"</?table.*>", '', string)
+    if re.search(r"&(nbsp|amp);", string) is not None:
+        string = re.sub(r"&(nbsp|amp);", '', string)
+    if string.find('<em') > -1:
+        string = re.sub(r"</?em>", '', string, flags=re.IGNORECASE)
+    if string.find('<code') > -1:
+        string = re.sub(r"</?code>", '', string)
+    return re.sub(r"\n{3,}", '', string)
 
 
-def convert_of_time(time):      # конвертация времени из секунд в часы
+def convert_time(time):      # конвертация времени из секунд в часы
     return ('0' * (2 - len(str(time // 3600))) + str(time // 3600)) + ':' + ('0' * (2 - len(str(time // 60 % 60))) + str(time // 60 % 60)) + ':' + ('0' * (2 - len(str(time % 60))) + str(time % 60))
 
 
@@ -78,10 +89,10 @@ def parse_category(html):   # парсим категории
         html = html[html.find('category text="') + 15:]
         if html.find('>') < html.find('/>'):  # если у категории есть подкатегории
             categorys += html[: html.find('"')] + ', '
-            subcategorys_of_field = html[html.find('>') + 1: html.find('</itunes:category>')]
-            while subcategorys_of_field.find('category text="') > -1:
-                subcategorys += subcategorys_of_field[subcategorys_of_field.find('category text="') + 15: subcategorys_of_field.rfind('"')]  + ', '
-                subcategorys_of_field = subcategorys_of_field[subcategorys_of_field.find('/>') + 2:]
+            subcategorys_field = html[html.find('>') + 1: html.find('</itunes:category>')]
+            while subcategorys_field.find('category text="') > -1:
+                subcategorys += subcategorys_field[subcategorys_field.find('category text="') + 15: subcategorys_field.rfind('"')]  + ', '
+                subcategorys_field = subcategorys_field[subcategorys_field.find('/>') + 2:]
             html = html[html.find('</itunes:category>') + 18:]  # срезаем подкатегории
         else:
             categorys += html[: html.find('"')] + ', '
@@ -99,16 +110,15 @@ def parse_keywords(html):
 
 def parse_description(html):
     temp_code = html[html.find('description>') + 12:]
-    # print(temp_code[: temp_code.find('</')])
-    return check_on_shit(temp_code[: temp_code.find('</')])
+    return check_on_shit(temp_code[:temp_code.find(re.search(r"</(desc|itun)", temp_code).group())])
 
 
 def clear_pubdata(string):
-    dict_of_day = {'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04', 'May': '05', 'Jun': '06',
+    dict_day = {'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04', 'May': '05', 'Jun': '06',
                    'Jul': '07', 'Aug': '08', 'Sep': '09', 'Oct': '10', 'Nov': '11', 'Dec': '12'}
     if string[1] == ' ':    # для нормального времени (2 -> 02)
         string = '0' + string[0] + ' ' + string[2:]
     month = re.search(r'\w\w\w', string)[0]
-    string = re.sub(month, dict_of_day.get(month), string)  # запуливаем вместо названия месяца номер месяца
+    string = re.sub(month, dict_day.get(month), string)  # запуливаем вместо названия месяца номер месяца
     string = re.sub(r'[ :]', '', string)    # вместо пробела и двоиточия ничего, в инт бахаем
     return string[4:8] + string[2:4] + string[:2] + string[-6:]   # подводим под шаблон бд
