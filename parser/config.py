@@ -1,0 +1,5 @@
+db_host = '127.0.0.1'
+db_user = 'botoland'
+db_password = '1707'
+db_database = 'podcasts_parser'
+db_charset = 'utf8mb4'
