@@ -39,13 +39,13 @@
                     <div class="row justify-content-center" >
                         {% for podcast in carousel_podcasts_active %}
                             <a href="{% url 'pd_backend:podcast_url' podcast.0|get_value_from_dict:'id_podcast' %}">
-                               <img style='padding: 5%; width: 200px;' class="img-slider" src="{{ podcast.0|get_value_from_dict:'url_image_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
+                               <img style='padding: 10%; width: 300px' class="img-slider" src="{{ podcast.0|get_value_from_dict:'url_image_podcast' }}" onerror="this.onerror=null; this.src='https://support.apple.com/library/content/dam/edam/applecare/images/en_US/ios/podcasts/ios9-podcasts-app-tile.png'" alt=" {% static "img/portfolio/cabin.png" %}">
                             </a>
                             <a href="{% url 'pd_backend:podcast_url' podcast.1|get_value_from_dict:'id_podcast' %}">
-                               <img style='padding: 5%; width: 200px;' class="img-slider" src="{{ podcast.1|get_value_from_dict:'url_image_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
+                               <img style='padding: 10%; width: 300px' class="img-slider" src="{{ podcast.1|get_value_from_dict:'url_image_podcast' }}"  onerror="this.onerror=null; this.src='https://support.apple.com/library/content/dam/edam/applecare/images/en_US/ios/podcasts/ios9-podcasts-app-tile.png'" alt=" {% static "img/portfolio/cabin.png" %}">
                             </a>
                             <a href="{% url 'pd_backend:podcast_url' podcast.2|get_value_from_dict:'id_podcast' %}">
-                               <img style='padding: 5%; width: 200px;' class="img-slider" src="{{ podcast.2|get_value_from_dict:'url_image_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
+                               <img style='padding: 10%; width: 300px' class="img-slider" src="{{ podcast.2|get_value_from_dict:'url_image_podcast' }}" onerror="this.onerror=null; this.src='https://support.apple.com/library/content/dam/edam/applecare/images/en_US/ios/podcasts/ios9-podcasts-app-tile.png'" alt=" {% static "img/portfolio/cabin.png" %}">
                             </a>
                         {% endfor %}
                     </div>
@@ -54,13 +54,13 @@
                 <div class="carousel-item">
                   <div class="row justify-content-center" >
                             <a href="{% url 'pd_backend:podcast_url' podcast.0|get_value_from_dict:'id_podcast' %}">
-                               <img style='margin: 3%; width: 200px;' class="img-slider" src="{{ podcast.0|get_value_from_dict:'url_image_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
+                               <img style='padding: 10%; width: 300px;' class="img-slider" src="{{ podcast.0|get_value_from_dict:'url_image_podcast' }}"  onerror="this.onerror=null; this.src='https://support.apple.com/library/content/dam/edam/applecare/images/en_US/ios/podcasts/ios9-podcasts-app-tile.png'" alt=" {% static "img/portfolio/cabin.png" %}">
                             </a>
                             <a href="{% url 'pd_backend:podcast_url' podcast.1|get_value_from_dict:'id_podcast' %}">
-                               <img style='margin: 3%; width: 200px;' class="img-slider" src="{{ podcast.1|get_value_from_dict:'url_image_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
+                               <img style='padding: 10%; width: 300px;' class="img-slider" src="{{ podcast.1|get_value_from_dict:'url_image_podcast' }}" onerror="this.onerror=null; this.src='https://support.apple.com/library/content/dam/edam/applecare/images/en_US/ios/podcasts/ios9-podcasts-app-tile.png'"  alt=" {% static "img/portfolio/cabin.png" %}">
                             </a>
                             <a href="{% url 'pd_backend:podcast_url' podcast.2|get_value_from_dict:'id_podcast' %}">
-                               <img style='margin: 3%; width: 200px;' class="img-slider" src="{{ podcast.2|get_value_from_dict:'url_image_podcast' }}" alt=" {% static "img/portfolio/cabin.png" %}">
+                               <img style='padding: 10%; width: 300px;' class="img-slider" src="{{ podcast.2|get_value_from_dict:'url_image_podcast' }}"  onerror="this.onerror=null; this.src='https://support.apple.com/library/content/dam/edam/applecare/images/en_US/ios/podcasts/ios9-podcasts-app-tile.png'" alt=" {% static "img/portfolio/cabin.png" %}">
                             </a>
                   </div>
                 </div>
@@ -99,10 +99,11 @@
                                             </div>
                                           </div>
                                         </a>
-                                        <img class="img-fluid card-img-top" src="{{ podcast|get_value_from_dict:'url_image_podcast' }}" alt="">
+                                            <img class="img-fluid card-img-top" src="{{ podcast|get_value_from_dict:'url_image_podcast' }}"  onerror="this.onerror=null; this.src='https://support.apple.com/library/content/dam/edam/applecare/images/en_US/ios/podcasts/ios9-podcasts-app-tile.png'" alt="None">
+
                                       </div>
                                       {% if not carousel_podcasts  %}
-                                          <div class="card-footer" style='margin-top:-30px; margin-bottom: 30px;'>
+                                          <div class="card-footer" style='margin-top:-40px; margin-bottom: 30px;'>
                                               {% if search_data|lower in podcast|get_value_from_dict:'title_podcast'|lower%}
                                                 <text style="color: grey">Название: </text>{{ podcast|get_value_from_dict:'title_podcast'|highlight:search_data}}
                                               {% elif search_data|lower in podcast|get_value_from_dict:'description_podcast'|lower %}

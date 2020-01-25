@@ -15,6 +15,7 @@ class UrlForm(forms.ModelForm):
         fields = ['url_podcast']
 
     def clean(self):
+        err_links = []
         f_urls = self.cleaned_data.get('url_podcast').split('\n')
         urls = []
         [urls.append(item.strip('\r')) for item in f_urls if item.strip('\r') not in urls]
@@ -23,13 +24,27 @@ class UrlForm(forms.ModelForm):
         for err_url in ErrorLinks.objects.all().values('url'):
             for url in urls:
                 if url.strip('\r') == err_url['url']:
-                    raise forms.ValidationError("Ссылка {} в списке некорректных".format(url.strip('\r')))
+                    print('error!')
+                    print(url, err_url['url'])
+                    print('urls', urls)
+                    err_links.append(url.strip('\r'))
+                    urls.remove(url)
+                    #raise forms.ValidationError("Ссылка {} в списке некорректных".format(url.strip('\r')))
+                    continue
         print(UrlPodcasts.objects.all().values('url_podcast'))
         for err_url in UrlPodcasts.objects.all().values('url_podcast'):
             for url in urls:
                 print(url, err_url, '\n')
                 if url.strip('\r') == err_url['url_podcast']:
-                    raise forms.ValidationError("Ссылка {} уже есть в таблице".format(url.strip('\r')))
+                    print('error!')
+                    print(url, err_url['url_podcast'])
+                    print('urls', urls)
+                    err_links.append(url.strip('\r'))
+                    urls.remove(url)
+
+                    #raise forms.ValidationError("Ссылка {} уже есть в таблице".format(url.strip('\r')))
+                    continue
+        self.cleaned_data = {'url_podcast': urls}
         return self.cleaned_data
 
 
@@ -40,7 +55,8 @@ class UrlPodcastsAdmin(admin.ModelAdmin):
     list_display = ('id', 'url_podcast',)
 
     def save_model(self, request, obj, form, change):
-        f_data = form.cleaned_data['url_podcast'].split('\n')
+        f_data = form.cleaned_data['url_podcast']
+        print(f_data)
         data = []
         [data.append(item.strip('\r')) for item in f_data if item.strip('\r') not in data]
         print(data)
