@@ -2,7 +2,13 @@ from . import models
 from django.db.models import Count
 from django.db.models import Q
 
-
+def dictfetchall(cursor):
+    "Return all rows from a cursor as a dict"
+    columns = [col[0] for col in cursor.description]
+    return [
+        dict(zip(columns, row))
+        for row in cursor.fetchall()
+    ]
 
 def get_main_podcasts(_from=12, _to=None, ):
     if _to:
@@ -57,10 +63,40 @@ def get_podcast_full_info(id, return_podcast=False, return_cat=False, return_ser
 
 
 def search_podcasts(search_str):
-    podcasts = models.Podcasts.objects.filter(Q(title_podcast__icontains=search_str) |
-                                              Q(description_podcast__icontains=search_str) |
-                                              Q(author_podcast__icontains=search_str)).values()
-    return podcasts
+    # podcasts = models.Podcasts.objects.filter(Q(title_podcast__icontains=search_str) |
+    #                                           Q(description_podcast__icontains=search_str) |
+    #                                           Q(author_podcast__icontains=search_str)
+    #                                           ).values()
+    # podcasts = models.Podcasts.objects.raw('SELECT podcasts.* FROM podcasts '
+    #                                        'JOIN items ON (podcasts.id_podcast=items.id_podcast)'
+    #                                        ' WHERE podcasts.title_podcast LIKE "%s" '
+    #                                        'OR podcasts.description_podcast LIKE "%s" '
+    #                                        'OR podcasts.author_podcast LIKE "%s" '
+    #                                        'OR items.title_audio LIKE "%s" '
+    #                                        'OR items.description_audio LIKE "%s"', (search_str, search_str, search_str, search_str, search_str)
+    #                                        )
+    search_str = str('%' + search_str + '%')
+    # query = 'SELECT podcasts.*,items.* FROM podcasts RIGHT JOIN items ON items.id_podcast=podcasts.id_podcast' \
+    #         ' WHERE LOWER(podcasts.description_podcast) LIKE ("{}")' \
+    #         ' OR LOWER(podcasts.title_podcast) ' \
+    #         'LIKE ("{}") OR LOWER(podcasts.author_podcast) LIKE ("{}") OR LOWER(items.description_audio)' \
+    #         ' LIKE ("{}") OR LOWER(items.title_audio) LIKE ("{}")'.format(search_str, search_str, search_str, search_str, search_str)
+
+    chanels = 'SELECT podcasts.* FROM podcasts WHERE LOWER(podcasts.title_podcast) LIKE ("{}")' \
+             ' OR LOWER(podcasts.description_podcast) LIKE ("{}")' \
+              ' OR LOWER(podcasts.author_podcast) LIKE ("{}") '.format(search_str, search_str, search_str)
+    items = 'SELECT podcasts.id_podcast, podcasts.title_podcast, podcasts.url_image_podcast, items.id_item, items.title_audio, items.description_audio FROM podcasts RIGHT JOIN items ON items.id_podcast=podcasts.id_podcast' \
+            ' WHERE LOWER(items.title_audio) LIKE ("{}")' \
+            ' OR LOWER(items.description_audio) LIKE ("{}")'.format(search_str, search_str)
+    from django.db import connection
+    cursor = connection.cursor()
+    cursor.execute(chanels)
+    pd_chanels = dictfetchall(cursor)
+    cursor.execute(items)
+    pd_items = dictfetchall(cursor)
+    print('pd_items len', pd_items.__len__())
+    cursor.close()
+    return {'chanels': pd_chanels, 'items': pd_items}
 
 
 def search_category(tag_id):

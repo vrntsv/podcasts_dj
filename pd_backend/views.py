@@ -29,11 +29,12 @@ def index_router(request):
                       }
                       )
     if request.method == 'POST':
-        print(services.search_podcasts(request.POST.get('search_data')))
+        #print(services.search_podcasts(request.POST.get('search_data'))['items'])
         return render(request, 'pd_backend/index.html',
                       {
                           'search_data': request.POST.get('search_data'),
-                          'main_podcast': services.search_podcasts(request.POST.get('search_data')),
+                          'main_podcast': services.search_podcasts(request.POST.get('search_data'))['chanels'],
+                          'main_items': services.search_podcasts(request.POST.get('search_data'))['items'],
                       }
                       )
     return HttpResponse(status=405)
