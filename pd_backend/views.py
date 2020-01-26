@@ -29,12 +29,20 @@ def index_router(request):
                       }
                       )
     if request.method == 'POST':
-        #print(services.search_podcasts(request.POST.get('search_data'))['items'])
+        # for item in services.search_podcasts(request.POST.get('search_data'))['items']:
+        #     if request.POST.get('search_data') in item['description_audio']:
+        #         print('--------------------------------------')
+        #         print('TRUE')
+        #         print('ITEM ------>', item['description_audio'])
+        #         print('SEARCH ------>', request.POST.get('search_data'))
+        #         print('--------------------------------------')
+
         return render(request, 'pd_backend/index.html',
                       {
                           'search_data': request.POST.get('search_data'),
                           'main_podcast': services.search_podcasts(request.POST.get('search_data'))['chanels'],
-                          'main_items': services.search_podcasts(request.POST.get('search_data'))['items'],
+                          'items_title': services.search_podcasts(request.POST.get('search_data'))['items_title'],
+                          'items_description': services.search_podcasts(request.POST.get('search_data'))['items_description'],
                       }
                       )
     return HttpResponse(status=405)

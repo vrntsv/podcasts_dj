@@ -85,18 +85,22 @@ def search_podcasts(search_str):
     chanels = 'SELECT podcasts.* FROM podcasts WHERE LOWER(podcasts.title_podcast) LIKE ("{}")' \
              ' OR LOWER(podcasts.description_podcast) LIKE ("{}")' \
               ' OR LOWER(podcasts.author_podcast) LIKE ("{}") '.format(search_str, search_str, search_str)
-    items = 'SELECT podcasts.id_podcast, podcasts.title_podcast, podcasts.url_image_podcast, items.id_item, items.title_audio, items.description_audio FROM podcasts RIGHT JOIN items ON items.id_podcast=podcasts.id_podcast' \
+    items_title = 'SELECT podcasts.id_podcast, podcasts.title_podcast, podcasts.url_image_podcast, items.id_item, items.title_audio, items.description_audio FROM podcasts RIGHT JOIN items ON items.id_podcast=podcasts.id_podcast' \
             ' WHERE LOWER(items.title_audio) LIKE ("{}")' \
-            ' OR LOWER(items.description_audio) LIKE ("{}")'.format(search_str, search_str)
+            ''.format(search_str)
+    items_description = 'SELECT podcasts.id_podcast, podcasts.title_podcast, podcasts.url_image_podcast, items.id_item, items.title_audio, items.description_audio, items.image_audio FROM podcasts RIGHT JOIN items ON items.id_podcast=podcasts.id_podcast' \
+            ' WHERE LOWER(items.description_audio) LIKE ("{}")' \
+            ''.format(search_str)
     from django.db import connection
     cursor = connection.cursor()
     cursor.execute(chanels)
     pd_chanels = dictfetchall(cursor)
-    cursor.execute(items)
-    pd_items = dictfetchall(cursor)
-    print('pd_items len', pd_items.__len__())
+    cursor.execute(items_title)
+    pd_items_title = dictfetchall(cursor)
+    cursor.execute(items_description)
+    pd_items_description = dictfetchall(cursor)
     cursor.close()
-    return {'chanels': pd_chanels, 'items': pd_items}
+    return {'chanels': pd_chanels, 'items_title': pd_items_title, 'items_description': pd_items_description}
 
 
 def search_category(tag_id):
