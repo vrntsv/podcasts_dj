@@ -24,7 +24,6 @@ def index_router(request):
         return render(request, 'pd_backend/index.html',
                       {
                           'categories': services.get_categories_for_index(),
-
                           'carousel_podcasts': services.get_podcasts_for_carousel(),
                           'carousel_podcasts_active': services.get_podcasts_for_carousel_active(),
                           'main_podcast': main_podcast,

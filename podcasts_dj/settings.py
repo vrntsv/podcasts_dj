@@ -91,6 +91,9 @@ DATABASES = {
       'PASSWORD': 'admin',
       'HOST': '/Applications/MAMP/tmp/mysql/mysql.sock',
       'PORT': '8888',
+      'OPTIONS': {
+          'init_command': "SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));"
+      }
   }
 }
 #
@@ -100,7 +103,7 @@ DATABASES = {
 #         'NAME': 'podcasts_parser',
 #         'USER': 'botoland',
 #         'PASSWORD': '1707',
-#         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+#         'HOST': '193.164.149.113',   # Or an IP Address that your DB is hosted on
 #         'PORT': '3306',
 #     }
 # }

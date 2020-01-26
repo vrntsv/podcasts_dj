@@ -1,5 +1,6 @@
 from . import models
 from django.db.models import Count
+import random
 from django.db.models import Q
 
 def dictfetchall(cursor):
@@ -19,19 +20,28 @@ def get_main_podcasts(_from=12, _to=None, ):
     return podcasts
 
 
-def get_podcasts_for_carousel(len=9): # должно делиться на три
-    pod_list=[]
-    podcasts = models.Podcasts.objects.all().values().annotate(id_podcast_count=Count('id_podcast')).order_by('-id_podcast_count')[3:len+3]
-    for i in range(0, len, 3):
-        pod_list.append([podcasts[i], podcasts[i+1], podcasts[i+2]])
-    return pod_list
+
 
 
 def get_podcasts_for_carousel_active(): # должно делиться на три
-    podcasts = models.Podcasts.objects.all().values().annotate(id_podcast_count=Count('id_podcast')).order_by('-id_podcast_count')[:3]
-    pod_list = []
-    for i in range(0, 3, 3):
-        pod_list.append([podcasts[i], podcasts[i+1], podcasts[i+2]])
+    podcasts_id_dict = models.Podcasts.objects.all().values('id_podcast')
+    podcasts_id_list = []
+    print('\n\n\npodcasts_id_list - ', podcasts_id_list)
+    for item in list(podcasts_id_dict):
+        podcasts_id_list.append(item['id_podcast'])
+    print('\n\n\npodcasts_id_list - ', podcasts_id_list)
+
+    random_profiles_id_list = random.sample(podcasts_id_list, 3)
+    print('\n\n\nrandom_profiles_id_list - ', random_profiles_id_list)
+    podcasts = models.Podcasts.objects.filter(id_podcast__in=random_profiles_id_list).values()
+    print(podcasts.__len__())
+    return list(podcasts)
+
+
+def get_podcasts_for_carousel(len=3): # должно делиться на три
+    pod_list=[]
+    for i in range(0, len):
+        pod_list.append(get_podcasts_for_carousel_active())
     return pod_list
 
 
