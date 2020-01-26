@@ -140,5 +140,14 @@ def get_cat_name_by_id(cat_id):
     return models.Categorys.objects.filter(id_category=cat_id).values()[0]['title_category']
 
 
+def get_categories_for_index():
+    data = []
+    cats = models.Categorys.objects.all().values()
+    cats_div_len = int(cats.__len__()/3)*3
+    for i in range(0, cats_div_len, 3):
+        data.append([cats[i], cats[i+1], cats[i+2]])
+    return list(cats)
+
+
 def get_series_full_info(podcast_id, series_id):
     return models.Items.objects.all().filter(id_podcast=podcast_id, id_item=series_id).values()

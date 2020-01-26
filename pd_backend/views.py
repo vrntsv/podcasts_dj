@@ -23,6 +23,8 @@ def index_router(request):
             main_podcast = paginator.page(paginator.num_pages)
         return render(request, 'pd_backend/index.html',
                       {
+                          'categories': services.get_categories_for_index(),
+
                           'carousel_podcasts': services.get_podcasts_for_carousel(),
                           'carousel_podcasts_active': services.get_podcasts_for_carousel_active(),
                           'main_podcast': main_podcast,
@@ -39,6 +41,7 @@ def index_router(request):
 
         return render(request, 'pd_backend/index.html',
                       {
+                          'categories': services.get_categories_for_index(),
                           'search_data': request.POST.get('search_data'),
                           'main_podcast': services.search_podcasts(request.POST.get('search_data'))['chanels'],
                           'items_title': services.search_podcasts(request.POST.get('search_data'))['items_title'],
@@ -77,6 +80,8 @@ def category_search_router(request, category_id):
 
     return render(request, 'pd_backend/index.html',
                   {
+                      'categories': services.get_categories_for_index(),
+                      'search_data': services.get_cat_name_by_id(category_id),
                       'main_podcast': services.search_category(category_id),
                       'cats_by_id': services.get_cats_pd_id(),
                       'searched_cat_id': category_id,

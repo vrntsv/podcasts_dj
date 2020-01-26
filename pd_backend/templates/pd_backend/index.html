@@ -78,110 +78,125 @@
             </div>
         </div>
     </section>
-
   {% endif %}
-  <!-- Canals Section -->
+  {% if categories %}
+  <div class="container">
+    <div class="card my-4">
+      <h5 class="card-header">Категории</h5>
+      <div class="card-body">
+        <div class="row">
+            {% for category in categories %}
+                  <div class="col col-lg-3 col-md-4 col-sm-2">
+                    <ul class="list-unstyled mb-0">
+                      <li>
+                        <a href="{% url 'pd_backend:cat_url' category|get_value_from_dict:'id_category' %}">{{ category|get_value_from_dict:'title_category'}}</a>
+                      </li>
 
-     {% if main_podcast == 'NotFoundCat' %}
+                    </ul>
+                  </div>
+            {% endfor %}
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+    {% if main_podcast == 'NotFoundCat' %}
          <br>
         <h2 align="center" style="color: grey">Извините, по этому тэгу больше нет подкастов :(</h2>
     {% else %}
-                  <section class="page-section portfolio " id="portfolio">
-                      <div class="container infinite-container">
-                          <div class="row infinite-item">
-                                {% for podcast in main_podcast %}
-                                  <div class="col-6 col-md-6 col-xl-3 col-lg-4">
-                                      <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#portfolioModal1">
-                                        <a href="{% url 'pd_backend:podcast_url' podcast|get_value_from_dict:'id_podcast' %}">
-                                          <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                                            <div class="portfolio-item-caption-content text-center text-white">
-                                              <p > {{ podcast|get_value_from_dict:'title_podcast' }}</p>
-                                            </div>
-                                          </div>
-                                        </a>
-                                            <img class="img-fluid card-img-top" src="{{ podcast|get_value_from_dict:'url_image_podcast' }}"  onerror="this.onerror=null; this.src='https://support.apple.com/library/content/dam/edam/applecare/images/en_US/ios/podcasts/ios9-podcasts-app-tile.png'" alt="None">
-
-                                      </div>
-                                      {% if not carousel_podcasts  %}
-                                          <div class="card-footer" style='margin-top:-40px; margin-bottom: 30px;'>
-                                              {% if search_data|lower in podcast|get_value_from_dict:'title_podcast'|lower%}
-                                                <text style="color: grey">Название: </text>{{ podcast|get_value_from_dict:'title_podcast'|highlight:search_data}}
-                                              {% elif search_data|lower in podcast|get_value_from_dict:'description_podcast'|lower %}
-                                                <text style="color: grey">Описание: </text>{{ podcast|get_value_from_dict:'description_podcast'|highlight:search_data}}
-                                              {% elif search_data|lower in podcast|get_value_from_dict:'author_podcast'|lower %}
-                                                <text style="color: grey">Автор: </text>{{ podcast|get_value_from_dict:'author_podcast'|highlight:search_data}}
-                                              {% endif %}
-                                              {% if cats_by_id %}
-                                                {% with pd_id=podcast|get_value_from_dict:'id_podcast' %}
-                                                  <!-- Вывод всех категорий канала -->
-                                                  <text style="color: grey">Категории: </text>
-                                                  {%  with data=cats_by_id|get_value_from_dict:pd_id  %}
-                                                    {% for id, name in data.items %}
-                                                      {% if id == searched_cat_id %}
-                                                        <a href="{% url 'pd_backend:cat_url' id%}" style="background-color: #FFFF00"> {{ name }}</a> <text>  </text>
-                                                      {% else %}
-                                                        <a href="{% url 'pd_backend:cat_url' id%}" > {{ name }} </a> <text>  </text>
-                                                      {% endif %}
-                                                    {% endfor %}
-                                                  {% endwith %}
-                                                {% endwith %}
-                                              {% endif %}
-                                          </div> 
-                                       {% endif %}
+        <section class="page-section portfolio " id="portfolio">
+            <div class="container infinite-container">
+                <div class="row infinite-item">
+                      {% for podcast in main_podcast %}
+                        <div class="col-6 col-md-6 col-xl-3 col-lg-4">
+                            <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#portfolioModal1">
+                              <a href="{% url 'pd_backend:podcast_url' podcast|get_value_from_dict:'id_podcast' %}">
+                                <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                                  <div class="portfolio-item-caption-content text-center text-white">
+                                    <p > {{ podcast|get_value_from_dict:'title_podcast' }}</p>
                                   </div>
-                                {% endfor %}
-                              {% for item in items_title %}
-                                  <div class="col-6 col-md-6 col-xl-3 col-lg-4">
-                                          <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#portfolioModal1">
-                                            <a href="{% url 'pd_backend:series_url' item|get_value_from_dict:'id_podcast' item|get_value_from_dict:'id_item' %}">
-                                              <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                                                <div class="portfolio-item-caption-content text-center text-white">
-                                                  <p > {{ item|get_value_from_dict:'title_podcast' }}</p>
-                                                </div>
-                                              </div>
-                                            </a>
-                                                <img class="img-fluid card-img-top" src="{{ item|get_value_from_dict:'url_image_podcast' }}"  onerror="this.onerror=null; this.src='https://support.apple.com/library/content/dam/edam/applecare/images/en_US/ios/podcasts/ios9-podcasts-app-tile.png'" alt="None">
-                                          </div>
-
-                                      <div class="card-footer" style='margin-top:-40px; margin-bottom: 30px;'>
-                                            <text style="color: grey; background-color: #FFFF00">Название выпуска: </text>{{ item|get_value_from_dict:'title_audio'|highlight:search_data|truncatechars_html:50}}
-
-                                      </div>
-                                  </div>
-                               {% endfor %}
-                              {% for item in items_description %}
-                                  <div class="col-6 col-md-6 col-xl-3 col-lg-4">
-                                          <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#portfolioModal1">
-                                            <a href="{% url 'pd_backend:series_url' item|get_value_from_dict:'id_podcast' item|get_value_from_dict:'id_item' %}">
-                                              <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-                                                <div class="portfolio-item-caption-content text-center text-white">
-                                                  <p > {{ item|get_value_from_dict:'title_podcast' }}</p>
-                                                </div>
-                                              </div>
-
-                                            </a>
-                                                <img class="img-fluid card-img-top" src="{{ item|get_value_from_dict:'image_audio' }}"  onerror="this.onerror=null; this.src='https://support.apple.com/library/content/dam/edam/applecare/images/en_US/ios/podcasts/ios9-podcasts-app-tile.png'" alt="None">
-                                          </div>
-
-                                      <div class="card-footer" style='margin-top:-40px; margin-bottom: 30px;'>
-                                            <text style="color: grey; background-color: #FFFF00">Описание выпуска: </text>{{ item|get_value_from_dict:'title_audio'|truncatechars_html:50}}
-                                      </div>
-                                  </div>
-                               {% endfor %}
-
-                          </div>
+                                </div>
+                              </a>
+                              <img class="img-fluid card-img-top" src="{{ podcast|get_value_from_dict:'url_image_podcast' }}"  onerror="this.onerror=null; this.src='https://support.apple.com/library/content/dam/edam/applecare/images/en_US/ios/podcasts/ios9-podcasts-app-tile.png'" alt="None">
+                            </div>
+                            {% if not carousel_podcasts  %}
+                              <div class="card-footer" style='margin-top:-40px; margin-bottom: 30px;'>
+                                  {% if search_data|lower in podcast|get_value_from_dict:'title_podcast'|lower%}
+                                    <text style="color: grey">Название: </text>{{ podcast|get_value_from_dict:'title_podcast'|highlight:search_data}}
+                                  {% elif search_data|lower in podcast|get_value_from_dict:'description_podcast'|lower %}
+                                    <text style="color: grey">Описание: </text>{{ podcast|get_value_from_dict:'description_podcast'|highlight:search_data}}
+                                  {% elif search_data|lower in podcast|get_value_from_dict:'author_podcast'|lower %}
+                                    <text style="color: grey">Автор: </text>{{ podcast|get_value_from_dict:'author_podcast'|highlight:search_data}}
+                                  {% endif %}
+                                  {% if cats_by_id %}
+                                    {% with pd_id=podcast|get_value_from_dict:'id_podcast' %}
+                                      <!-- Вывод всех категорий канала -->
+                                      <text style="color: grey">Категории: </text>
+                                      {%  with data=cats_by_id|get_value_from_dict:pd_id  %}
+                                        {% for id, name in data.items %}
+                                          {% if id == searched_cat_id %}
+                                            <a href="{% url 'pd_backend:cat_url' id%}" style="background-color: #FFFF00"> {{ name }}</a> <text>  </text>
+                                          {% else %}
+                                            <a href="{% url 'pd_backend:cat_url' id%}" > {{ name }} </a> <text>  </text>
+                                          {% endif %}
+                                        {% endfor %}
+                                      {% endwith %}
+                                    {% endwith %}
+                                  {% endif %}
+                              </div> 
+                            {% endif %}
                         </div>
-                  </section>
+                      {% endfor %}
+                    {% for item in items_title %}
+                        <div class="col-6 col-md-6 col-xl-3 col-lg-4">
+                                <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#portfolioModal1">
+                                  <a href="{% url 'pd_backend:series_url' item|get_value_from_dict:'id_podcast' item|get_value_from_dict:'id_item' %}">
+                                    <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                                      <div class="portfolio-item-caption-content text-center text-white">
+                                        <p > {{ item|get_value_from_dict:'title_podcast' }}</p>
+                                      </div>
+                                    </div>
+                                  </a>
+                                      <img class="img-fluid card-img-top" src="{{ item|get_value_from_dict:'url_image_podcast' }}"  onerror="this.onerror=null; this.src='https://support.apple.com/library/content/dam/edam/applecare/images/en_US/ios/podcasts/ios9-podcasts-app-tile.png'" alt="None">
+                                </div>
 
+                            <div class="card-footer" style='margin-top:-40px; margin-bottom: 30px;'>
+                                  <text style="color: grey; background-color: #FFFF00">Название выпуска: </text>{{ item|get_value_from_dict:'title_audio'|highlight:search_data|truncatechars_html:50}}
+
+                            </div>
+                        </div>
+                     {% endfor %}
+                    {% for item in items_description %}
+                        <div class="col-6 col-md-6 col-xl-3 col-lg-4">
+                                <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#portfolioModal1">
+                                  <a href="{% url 'pd_backend:series_url' item|get_value_from_dict:'id_podcast' item|get_value_from_dict:'id_item' %}">
+                                    <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                                      <div class="portfolio-item-caption-content text-center text-white">
+                                        <p > {{ item|get_value_from_dict:'title_podcast' }}</p>
+                                      </div>
+                                    </div>
+
+                                  </a>
+                                      <img class="img-fluid card-img-top" src="{{ item|get_value_from_dict:'image_audio' }}"  onerror="this.onerror=null; this.src='https://support.apple.com/library/content/dam/edam/applecare/images/en_US/ios/podcasts/ios9-podcasts-app-tile.png'" alt="None">
+                                </div>
+
+                            <div class="card-footer" style='margin-top:-40px; margin-bottom: 30px;'>
+                                  <text style="color: grey; background-color: #FFFF00">Описание выпуска: </text>{{ item|get_value_from_dict:'title_audio'|truncatechars_html:50}}
+                            </div>
+                        </div>
+                     {% endfor %}
+
+                </div>
+              </div>
+        </section>
 
 
     {% endif %}
       {% if main_podcast.has_next %}
              <a class="infinite-more-link" href="?page={{ main_podcast.next_page_number }}">More</a>
-        {% endif %}
-      <div class="loading" style="display: none;">
-    Loading...
-  </div>
+      {% endif %}
 
 
 
