@@ -103,6 +103,13 @@
     {% if main_podcast == 'NotFoundCat' %}
          <br>
         <h2 align="center" style="color: grey">Извините, по этому тэгу больше нет подкастов :(</h2>
+                <a href="{% url 'pd_backend:index_url' %}"><h3 align="center" >Вернуться на главную страницу</h3></a>
+
+    {% elif not main_podcast and not items_description and not items_title %}
+        <br>
+        <h2 align="center" style="color: grey">Извините, по вашему запросу нет подкастов :(</h2>
+        <a href="{% url 'pd_backend:index_url' %}"><h3 align="center" >Вернуться на главную страницу</h3></a>
+
     {% else %}
         <section class="page-section portfolio " id="portfolio">
             <div class="container infinite-container">
