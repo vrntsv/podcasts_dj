@@ -26,15 +26,10 @@ def get_main_podcasts(_from=12, _to=None, ):
 def get_podcasts_for_carousel_active(): # должно делиться на три
     podcasts_id_dict = models.Podcasts.objects.all().values('id_podcast')
     podcasts_id_list = []
-    print('\n\n\npodcasts_id_list - ', podcasts_id_list)
     for item in list(podcasts_id_dict):
         podcasts_id_list.append(item['id_podcast'])
-    print('\n\n\npodcasts_id_list - ', podcasts_id_list)
-
     random_profiles_id_list = random.sample(podcasts_id_list, 3)
-    print('\n\n\nrandom_profiles_id_list - ', random_profiles_id_list)
     podcasts = models.Podcasts.objects.filter(id_podcast__in=random_profiles_id_list).values()
-    print(podcasts.__len__())
     return list(podcasts)
 
 
