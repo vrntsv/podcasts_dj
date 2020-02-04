@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UrlPodcasts, ErrorLinks
+from pd_backend.models import UrlPodcasts, ErrorLinks
 from django import forms
 from django.db.utils import IntegrityError
 from django.shortcuts import render, redirect
