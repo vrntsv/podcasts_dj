@@ -6,8 +6,21 @@
 {% endblock %}
 
 {% block content %}
+
   <section class="page-section portfolio" >
-    <div class="row justify-content-center">
+    <!-- НАЧАЛО НАВИГАЦИИ-->
+    <div style='width: 100%;' class="row justify-content-center">
+      <nav style='width: 80%;' aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active" aria-current="page"><a href="{% url "pd_backend:index_url" %}">Главная</a></li>
+          <!-- По нажатию на название, выводит все подкасты с категорией ( если их несколько, то берется первая категория) -->
+          <li class="breadcrumb-item"><a href="{% url "pd_backend:cat_url" podcast_categories.0|get_value_from_dict:'id_category' %}">{{ podcast_title }}</a></li>
+          <li class="breadcrumb-item active" aria-current="page"><a href="#">{{series.0|get_value_from_dict:'title_audio'}}</a></li>
+        </ol>
+      </nav>
+    </div>
+    <!-- КОНЕЦ НАФИГАЦИИ -->
+    <div style='width: 100%;' class="row justify-content-center">
         <div class="card my-2" style="width: 80%">
           <div class="card-body ">
             <h2 class="card-title">{{ series.0|get_value_from_dict:'title_audio' }} </h2>

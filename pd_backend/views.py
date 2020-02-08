@@ -24,8 +24,8 @@ def index_router(request):
         return render(request, 'pd_backend/index.html',
                       {
                           'categories': services.get_categories_for_index(),
-                          'carousel_podcasts': services.get_podcasts_for_carousel(),
-                          'carousel_podcasts_active': services.get_podcasts_for_carousel_active(),
+                          #'carousel_podcasts': services.get_podcasts_for_carousel(),
+                          #'carousel_podcasts_active': services.get_podcasts_for_carousel_active(),
                           'main_podcast': main_podcast,
                       }
                       )
@@ -57,7 +57,9 @@ def podcast_router(request, podcast_id):
             {
                 'podcast': services.get_podcast_full_info(id=podcast_id, return_podcast=True),
                 'categories': services.get_podcast_full_info(podcast_id, return_cat=True),
-                'series': services.get_podcast_full_info(id=podcast_id, return_series=True)
+                #'categories_ids': services.get_podcast_full_info(podcast_id, return_cat_ids=True),
+                'series': services.get_podcast_full_info(id=podcast_id, return_series=True),
+                'series_count': services.get_podcast_full_info(id=podcast_id, return_series_count=True)
             }
         )
     return HttpResponse(status=405)
@@ -70,8 +72,11 @@ def series_router(request, podcast_id, series_id):
         print(services.get_series_full_info(podcast_id, series_id))
 
         return render(request, 'pd_backend/series.html',
-                      {'series': services.get_series_full_info(podcast_id, series_id)})
-
+                      {
+                          'series': services.get_series_full_info(podcast_id, series_id),
+                          'podcast_title': services.get_podcast_title_by_id(podcast_id),
+                          'podcast_categories': services.get_podcast_full_info(podcast_id, return_cat=True),
+                      })
 
 
 def category_search_router(request, category_id):

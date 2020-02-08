@@ -40,13 +40,16 @@ def get_podcasts_for_carousel(len=3): # должно делиться на тр�
     return pod_list
 
 
-def get_podcast_full_info(id, return_podcast=False, return_cat=False, return_series=False):
+def get_podcast_full_info(id, return_podcast=False, return_cat=False,
+                          return_series=False, return_series_count=False, return_cat_ids=False):
     podcast = models.Podcasts.objects.all().filter(id_podcast=id).values()
     if return_podcast:
         return podcast
     series = models.Items.objects.all().filter(id_podcast=id).values()
     if return_series:
         return series
+    if return_series_count:
+        return series.__len__()
     cat_podcast = []
     cat_ids = models.PodcastsWithCategorys.objects.all().filter(id_podcast=id).values('id_category')
     for id in cat_ids:
@@ -63,6 +66,10 @@ def get_podcast_full_info(id, return_podcast=False, return_cat=False, return_ser
                 )
         except Exception:
             print('err')
+    if return_cat_ids:
+        ids = []
+        for cat in cat_podcast:
+            ids.append(cat['id_category'])
     if return_cat:
         return cat_podcast
 
@@ -109,6 +116,15 @@ def search_podcasts(search_str):
 
 
 def search_category(tag_id):
+    # if type(tag_id) == list:
+    #     print('------------------')
+    #     print('----------tag id --------')
+    #     print(tag_id)
+    #     print('----------tag id --------')
+    #     podcast_ids = []
+    #     for id in tag_id:
+    #         podcast_ids.append(models.PodcastsWithCategorys.objects.filter(id_category=id).values('id_podcast'))
+    # else:
     podcast_ids = models.PodcastsWithCategorys.objects.filter(id_category=tag_id).values('id_podcast')
     if podcast_ids.__len__() > 1:
         podcasts = []
@@ -143,6 +159,10 @@ def get_cats_pd_id():
 
 def get_cat_name_by_id(cat_id):
     return models.Categorys.objects.filter(id_category=cat_id).values()[0]['title_category']
+
+
+def get_podcast_title_by_id(pd_id):
+    return models.Podcasts.objects.filter(id_podcast=pd_id).values()[0]['title_podcast']
 
 
 def get_categories_for_index():

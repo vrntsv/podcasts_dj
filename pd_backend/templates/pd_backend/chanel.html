@@ -7,13 +7,27 @@
 {% block content %}
 
   <section class="page-section portfolio" >
+      <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page"><a href="{% url "pd_backend:index_url" %}">Главная</a></li>
+        <!-- По нажатию на название, выводит все подкасты с категорией ( если их несколько, то берется первая категория) -->
+        {% if categories|length > 0 %}
+            <li class="breadcrumb-item active"><a href="{% url 'pd_backend:cat_url' categories.0|get_value_from_dict:'id_category' %}">{{ podcast.0|get_value_from_dict:'title_podcast' }}</a></li>
+        {% else %}
+            <li class="breadcrumb-item">{{ podcast.0|get_value_from_dict:'title_podcast' }}</li>
+        {% endif %}
+      </ol>
+    </nav>
     <div class="row">
-      <div class="col col-sm-12 col-md-6 col-xl-6">
+      <div style='width: 100%'  class="col col-sm-12 col-md-6 col-xl-6">
         <div class="card my-2" style="max-width: 700px;">
         	<img class="card-img-top"  src="{{ podcast.0|get_value_from_dict:'url_image_podcast' }}" alt="Card image">
           	<div class="card-body ">
             	<h2 class="card-title"> {{ podcast.0|get_value_from_dict:'title_podcast' }}</h2>
-                <p>{{ podcast.0|get_value_from_dict:'description_podcast'|linebreaks }}</p>
+                <p>{{ podcast.0|get_value_from_dict:'description_podcast'|linebreaks }}
+                <br><br>
+                    Выпусков: {{series_count}} штук
+                </p>
           	</div>
 	        <div class="card-footer">
 		        {% if categories %}
