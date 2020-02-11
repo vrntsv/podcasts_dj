@@ -67,6 +67,9 @@ def podcast_router(request, podcast_id):
     return HttpResponse(status=405)
 
 
+
+
+
 def series_router(request, podcast_id, series_id):
     if request.method == 'GET':
         print('podcast id', podcast_id)
