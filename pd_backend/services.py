@@ -59,7 +59,7 @@ def get_podcast_full_info(id, return_podcast=False, return_cat=False,
             cat_podcast.append(
                 {
                     'id_category': tag[0]['id_category'],
-                    'title_category': tag[0]['title_category']
+                    'title_category': tag[0]['ru_title']
 
 
                 }
@@ -144,25 +144,30 @@ def get_cats_pd_id():
             data[p['id_podcast']].update(
                 {
                     p['id_category']:
-                models.Categorys.objects.all().filter(id_category=p['id_category']).values()[0]['title_category']
+                models.Categorys.objects.all().filter(id_category=p['id_category']).values()[0]['ru_title']
                 }
             )
         else:
             data.update({
                 p['id_podcast']: {
                     p['id_category']:
-                    models.Categorys.objects.all().filter(id_category=p['id_category']).values()[0]['title_category']
+                    models.Categorys.objects.all().filter(id_category=p['id_category']).values()[0]['ru_title']
                 }
             })
     return data
 
 
 def get_cat_name_by_id(cat_id):
-    return models.Categorys.objects.filter(id_category=cat_id).values()[0]['title_category']
+    return models.Categorys.objects.filter(id_category=cat_id).values()[0]['ru_title']
 
 
 def get_podcast_title_by_id(pd_id):
     return models.Podcasts.objects.filter(id_podcast=pd_id).values()[0]['title_podcast']
+
+
+def get_podcast_authour_by_id(pd_id):
+    return models.Podcasts.objects.filter(id_podcast=pd_id).values()[0]['author_podcast']
+
 
 
 def get_categories_for_index():

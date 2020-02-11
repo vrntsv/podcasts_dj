@@ -9,6 +9,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def index_redirect(request):
     return redirect('/ru')
 
+
 def index_router(request):
     if request.method == 'GET':
         main_podcast = services.get_main_podcasts()
@@ -30,6 +31,7 @@ def index_router(request):
                       }
                       )
     if request.method == 'POST':
+        print(services.search_podcasts(request.POST.get('search_data')))
         # for item in services.search_podcasts(request.POST.get('search_data'))['items']:
         #     if request.POST.get('search_data') in item['description_audio']:
         #         print('--------------------------------------')
@@ -75,6 +77,7 @@ def series_router(request, podcast_id, series_id):
                       {
                           'series': services.get_series_full_info(podcast_id, series_id),
                           'podcast_title': services.get_podcast_title_by_id(podcast_id),
+                          'podcast_author': services.get_podcast_authour_by_id(podcast_id),
                           'podcast_categories': services.get_podcast_full_info(podcast_id, return_cat=True),
                       })
 

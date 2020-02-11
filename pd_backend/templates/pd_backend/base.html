@@ -6,11 +6,15 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
+    {% block description %}
+         <meta name="description" content="Полная подборка подкастов айтюнс по всем тематикам на русском, самые актуальные материалы из мира Itunes Podcasts">
+    {% endblock %}
+
   <meta name="author" content="">
-  <title>{% block title %}
-    Каталог подкастов tgpodcast - лучшая подборка подкастов для прослушивания в мессенджере Telegram{% endblock %}
-</title>
+
+    {% block title %}
+
+    {% endblock %}
 
 
   <!-- Custom fonts for this theme -->
@@ -23,14 +27,27 @@
 
 </head>
 <body id="page-top">
-{% block searchbar %}
-  <div class="container">
+
+  <!-- Шапка -->
+
+  <div style="width: 100%">
+      <div  style="text-align: center; width: 20%;">
+        <a href="{%  url "pd_backend:index_url" %}">
+            <h3 style="margin-top: 3%" >TgPodcast</h3>
+        </a>
+    </div>
+      <div style='width: 60%; max-height: 100px; '>
       <form action="{% url 'pd_backend:index_url' %}" method="post">
-          {% csrf_token %}
-        <input style="width: 100%; margin-top: 5%" name="search_data" class="btn finder" type="text" placeholder='Введи сюда что-то ...' type="submit">
-      </form>
+              {% csrf_token %}
+
+            {% block searchbar %}
+                 <input style="margin-left: 5%; width: 70%" class="btn finder"  name="search_data" type="finder" placeholder='Ищите по более чем 100 000 подкастов'>
+            {% endblock %}
+      </div>
+
   </div>
-{% endblock %}
+
+
 
  {% block content %}
 

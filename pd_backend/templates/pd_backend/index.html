@@ -5,27 +5,31 @@
     {% block searchbar %}
 
 {% if search_data %}
-      <div class="container">
-      <form action="{% url 'pd_backend:index_url' %}" method="post">
-          {% csrf_token %}
-        <input style="width: 100%; margin-top: 5%" name="search_data" class="btn finder" type="text" value="{{ search_data }}" placeholder='Введи сюда что-то ...'>
-      </form>
-  </div>
+
+          <input style="margin-left: 5%; width: 70%" class="btn finder" type="text" name="search_data" placeholder='Ищите по более чем 100 000 подкастов' value="{{ search_data }}">
+             <meta name="description" content="Лучшая и самая полная подборка подкастов айтюнс по теме {{ search_data }}, все что есть в Itunes Podcasts в категории {{ searched_cat_name }} в каталоге tgpodcasts">
+                    <title>
+                        {{search_data}}: лучшие подкасты, каталог itunes podcasts по теме {{ search_data }}
+                    </title>
+
 
 {% elif searched_cat_name %}
-      <div class="container">
-      <form action="{% url 'pd_backend:index_url' %}" method="post">
-          {% csrf_token %}
-        <input style="width: 100%; margin-top: 5%" name="search_data" class="btn finder" type="text" placeholder='Поиск по категории:  {{ searched_cat_name }}'>
-      </form>
-  </div>
+
+          <input style="margin-left: 5%; width: 70%" class="btn finder" type="text"  name="search_data" placeholder='Ищите по более чем 100 000 подкастов' value="{{ searched_cat_name }}">
+
+             <meta name="description" content="Лучшая и самая полная подборка подкастов айтюнс по теме {{ searched_cat_name }}, все что есть в Itunes Podcasts в категории {{ searched_cat_name }} в каталоге tgpodcasts">
+                <title>
+                    {{searched_cat_name}}: лучшие подкасты, каталог itunes podcasts по теме {{ searched_cat_name }}
+                </title>
 {% else %}
-      <div class="container">
-      <form action="{% url 'pd_backend:index_url' %}" method="post">
-          {% csrf_token %}
-        <input style="width: 100%; margin-top: 5%" name="search_data" class="btn finder" type="text" placeholder='Введи сюда что-то ...' type="submit">
-      </form>
-  </div>
+
+          <input style="margin-left: 5%; width: 70%" class="btn finder" type="text"  name="search_data" placeholder='Ищите по более чем 100 000 подкастов'>
+                <title>
+                Каталог подкастов tgpodcast - лучшая подборка подкастов для прослушивания в мессенджере Telegram
+                </title>
+
+             <meta name="description" content="Полная подборка подкастов айтюнс по всем тематикам на русском, самые актуальные материалы из мира Itunes Podcasts">
+
 {% endif %}
     {% endblock %}
 
@@ -87,7 +91,7 @@
                   <div class="col col-lg-3 col-md-4 col-sm-2">
                     <ul class="list-unstyled mb-0">
                       <li>
-                        <a href="{% url 'pd_backend:cat_url' category|get_value_from_dict:'id_category' %}">{{ category|get_value_from_dict:'title_category'}}</a>
+                        <a href="{% url 'pd_backend:cat_url' category|get_value_from_dict:'id_category' %}">{% if category|get_value_from_dict:'ru_title' %}{{ category|get_value_from_dict:'ru_title'}} {% else %}{{  category|get_value_from_dict:'title_podcast'}}{% endif %}</a>
                       </li>
 
                     </ul>
@@ -129,11 +133,11 @@
                             {% if not carousel_podcasts  %}
                               <div class="card-footer" style='margin-top:-40px; margin-bottom: 30px;'>
                                   {% if search_data|lower in podcast|get_value_from_dict:'title_podcast'|lower%}
-                                    <text style="color: grey">Название: </text>{{ podcast|get_value_from_dict:'title_podcast'|highlight:search_data}}
+                                    <text style="color: grey">Название: </text>{{ podcast|get_value_from_dict:'title_podcast'|highlight:search_data|truncatechars_html:150}}
                                   {% elif search_data|lower in podcast|get_value_from_dict:'description_podcast'|lower %}
-                                    <text style="color: grey">Описание: </text>{{ podcast|get_value_from_dict:'description_podcast'|highlight:search_data}}
+                                    <text style="color: grey">Описание: </text>{{ podcast|get_value_from_dict:'description_podcast'|highlight:search_data|truncatechars_html:150}}
                                   {% elif search_data|lower in podcast|get_value_from_dict:'author_podcast'|lower %}
-                                    <text style="color: grey">Автор: </text>{{ podcast|get_value_from_dict:'author_podcast'|highlight:search_data}}
+                                    <text style="color: grey">Автор: </text>{{ podcast|get_value_from_dict:'author_podcast'|highlight:search_data|truncatechars_html:150}}
                                   {% endif %}
                                   {% if cats_by_id %}
                                     {% with pd_id=podcast|get_value_from_dict:'id_podcast' %}

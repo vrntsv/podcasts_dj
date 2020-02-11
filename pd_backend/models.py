@@ -90,6 +90,7 @@ class CatItem(models.Model):
 class Categorys(models.Model):
     id_category = models.SmallIntegerField(primary_key=True)
     title_category = models.TextField()
+    ru_title = models.TextField()
 
     class Meta:
         managed = False
