@@ -5,12 +5,12 @@
         {{ podcast.0|get_value_from_dict:'title_podcast' }} -
         {% if categories %}
                 {% for category in categories %}
-                     {{ category|get_value_from_dict:'title_category' }},
+                     {{ category|get_value_from_dict:'title_category' }}
                 {% endfor %}
         {% endif %}
-        -{{ podcast.0|get_value_from_dict:'author_podcast' }} - каталог tgpodcasts
+        - {{ podcast.0|get_value_from_dict:'author_podcast' }} - каталог tgpodcasts
         </title>
-             <meta name="description" content="Online каталог подкастов на русском tgpodcasts: слушать подкаст [название подкаста]">
+             <meta name="description" content="Online каталог подкастов на русском tgpodcasts: слушать подкаст {{ podcast.0|get_value_from_dict:'title_podcast' }} ">
     {% endblock %}
 {% block content %}
 
@@ -20,7 +20,8 @@
         <li class="breadcrumb-item active" aria-current="page"><a href="{% url "pd_backend:index_url" %}">Главная</a></li>
         <!-- По нажатию на название, выводит все подкасты с категорией ( если их несколько, то берется первая категория) -->
         {% if categories|length > 0 %}
-            <li class="breadcrumb-item active"><a href="{% url 'pd_backend:cat_url' categories.0|get_value_from_dict:'id_category' %}">{{ podcast.0|get_value_from_dict:'title_podcast' }}</a></li>
+            <li class="breadcrumb-item active"><a href="{% url 'pd_backend:cat_url' categories.0|get_value_from_dict:'id_category' %}">{{ categories.0|get_value_from_dict:'title_category' }}</a></li>
+            <li class="breadcrumb-item">{{ podcast.0|get_value_from_dict:'title_podcast' }}</li>
         {% else %}
             <li class="breadcrumb-item">{{ podcast.0|get_value_from_dict:'title_podcast' }}</li>
         {% endif %}

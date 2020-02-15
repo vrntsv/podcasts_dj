@@ -3,8 +3,13 @@
 {% load djutils %}
 {% block title %}
     <title>
-       {{ series.0|get_value_from_dict:'title_audio' }}
+       {{ series.0|get_value_from_dict:'title_audio' }} - {{ podcast_title }} - {{ podcast_author }}
     </title>
+{% endblock %}
+
+{% block description %}
+             <meta name="description" content="Online каталог подкастов на русском tgpodcasts: слушать подкаст {{ podcast_title }} ">
+
 {% endblock %}
 
 {% block content %}
@@ -15,6 +20,9 @@
       <nav style='width: 80%;' aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item active" aria-current="page"><a href="{% url "pd_backend:index_url" %}">Главная</a></li>
+            {% if podcast_categories|length > 0 %}
+                <li class="breadcrumb-item active"><a href="{% url 'pd_backend:cat_url' podcast_categories.0|get_value_from_dict:'id_category' %}">{{ podcast_categories.0|get_value_from_dict:'title_category' }}</a></li>
+            {% endif %}
           <!-- По нажатию на название, выводит все подкасты с категорией ( если их несколько, то берется первая категория) -->
           <li class="breadcrumb-item"><a href="{% url "pd_backend:podcast_url" series.0|get_value_from_dict:'id_podcast' %}">{{ podcast_title }}</a></li>
           <li class="breadcrumb-item active" aria-current="page">{{series.0|get_value_from_dict:'title_audio'}}</li>

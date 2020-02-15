@@ -27,24 +27,31 @@
 </head>
 <body id="page-top">
 
-  <!-- Шапка -->
+      <div class="fixed-top" style='width: 100%; max-height: 100px; background-color: #fff'>
+        <div class="container" style="padding-top: 2%">
+          <div class="row">
+            <div style='width: 20%'>
+              <a href="{%  url 'pd_backend:index_url'  %}">
+                <h2>TgPodcast</h2>
+              </a>
+            </div>
+            <div style='width: 70%'>
+            <form action="{% url 'pd_backend:index_url' %}" method="post">
+                 {% csrf_token %}
 
-  <div style="width: 100%">
-      <div  style="text-align: center; width: 20%;">
-        <a href="{%  url "pd_backend:index_url" %}">
-            <h3 style="margin-top: 3%" >TgPodcast</h3>
-        </a>
-    </div>
-      <div style='width: 60%; max-height: 100px; '>
-      <form action="{% url 'pd_backend:index_url' %}" method="post">
-              {% csrf_token %}
+                 {% block searchbar %}
+                     <input style="margin-left: 5%; width: 70%" class="btn finder"  name="search_data" type="finder" placeholder='Ищите по более чем 100 000 подкастов'>
+                 {% endblock %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style='height: 100px; padding-bottom: 5px;'>
 
-            {% block searchbar %}
-                 <input style="margin-left: 5%; width: 70%" class="btn finder"  name="search_data" type="finder" placeholder='Ищите по более чем 100 000 подкастов'>
-            {% endblock %}
       </div>
 
-  </div>
+  <!-- Шапка -->
+
 
 
 
