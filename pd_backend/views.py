@@ -31,24 +31,18 @@ def index_router(request):
                       }
                       )
     if request.method == 'POST':
-        print(services.search_podcasts(request.POST.get('search_data')))
-        # for item in services.search_podcasts(request.POST.get('search_data'))['items']:
-        #     if request.POST.get('search_data') in item['description_audio']:
-        #         print('--------------------------------------')
-        #         print('TRUE')
-        #         print('ITEM ------>', item['description_audio'])
-        #         print('SEARCH ------>', request.POST.get('search_data'))
-        #         print('--------------------------------------')
-
-        return render(request, 'pd_backend/index.html',
-                      {
-                          'categories': services.get_categories_for_index(),
-                          'search_data': request.POST.get('search_data'),
-                          'main_podcast': services.search_podcasts(request.POST.get('search_data'))['chanels'],
-                          'items_title': services.search_podcasts(request.POST.get('search_data'))['items_title'],
-                          'items_description': services.search_podcasts(request.POST.get('search_data'))['items_description'],
-                      }
-                      )
+        try:
+            return render(request, 'pd_backend/index.html',
+                          {
+                              'categories': services.get_categories_for_index(),
+                              'search_data': request.POST.get('search_data'),
+                              'main_podcast': services.search_podcasts(request.POST.get('search_data'))['chanels'],
+                              'items_title': services.search_podcasts(request.POST.get('search_data'))['items_title'],
+                              'items_description': services.search_podcasts(request.POST.get('search_data'))['items_description'],
+                          }
+                          )
+        except Exception as e:
+            redirect('/ru')
     return HttpResponse(status=405)
 
 

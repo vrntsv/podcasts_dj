@@ -239,9 +239,9 @@ class SubcatPodcast(models.Model):
 
 
 class UrlPodcasts(models.Model):
-    id = models.AutoField(primary_key=True, default=1)
+    id = models.AutoField(primary_key=True)
     url_podcast = models.TextField()
-    status_podcast = models.IntegerField()
+    status_podcast = models.IntegerField(default=1)
 
     class Meta:
         managed = False
