@@ -38,10 +38,11 @@
             <div style='width: 70%'>
             <form action="{% url 'pd_backend:index_url' %}" method="post">
                  {% csrf_token %}
-
                  {% block searchbar %}
-                     <input style="margin-left: 5%; width: 70%" class="btn finder"  name="search_data" type="finder" placeholder='Ищите по более чем 100 000 подкастов'>
+                     <input style="margin-left: 5%; width: 70%; -webkit-user-select:text;" class="btn finder" id="query" name="search_data" type="finder" placeholder='Ищите по более чем 100 000 подкастов'>
                  {% endblock %}
+
+                </form>
             </div>
           </div>
         </div>
@@ -102,6 +103,9 @@
         $('.loading').hide();
         }
       });
+
+
     </script>
+
 </body>
 </html>

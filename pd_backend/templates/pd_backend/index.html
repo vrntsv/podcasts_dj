@@ -6,7 +6,7 @@
 
 {% if search_data %}
 
-          <input style="margin-left: 5%; width: 70%" class="btn finder" type="text" name="search_data" placeholder='Ищите по более чем 100 000 подкастов' value="{{ search_data }}">
+          <input style="margin-left: 5%; width: 70%; -webkit-user-select:text;" class="btn finder"  id="query" type="text" name="search_data" placeholder='Ищите по более чем 100 000 подкастов' value="{{ search_data }}">
              <meta name="description" content="Лучшая и самая полная подборка подкастов айтюнс по теме {{ search_data }}, все что есть в Itunes Podcasts в категории {{ searched_cat_name }} в каталоге tgpodcasts">
                     <title>
                         {{search_data}}: лучшие подкасты, каталог itunes podcasts по теме {{ search_data }}
@@ -15,7 +15,7 @@
 
 {% elif searched_cat_name %}
 
-          <input style="margin-left: 5%; width: 70%" class="btn finder" type="text"  name="search_data" placeholder='Ищите по более чем 100 000 подкастов' value="{{ searched_cat_name }}">
+          <input style="margin-left: 5%; width: 70%; -webkit-user-select:text;" class="btn finder" id="query" type="text"  name="search_data" placeholder='Ищите по более чем 100 000 подкастов' value="{{ searched_cat_name }}">
 
              <meta name="description" content="Лучшая и самая полная подборка подкастов айтюнс по теме {{ searched_cat_name }}, все что есть в Itunes Podcasts в категории {{ searched_cat_name }} в каталоге tgpodcasts">
                 <title>
@@ -23,7 +23,7 @@
                 </title>
 {% else %}
 
-          <input style="margin-left: 5%; width: 70%" class="btn finder" type="text"  name="search_data" placeholder='Ищите по более чем 100 000 подкастов'>
+          <input style="margin-left: 5%; width: 70%; -webkit-user-select:text;" class="btn finder" type="text" id="query" name="search_data" placeholder='Ищите по более чем 100 000 подкастов'>
                 <title>
                     Каталог подкастов tgpodcast - лучшая подборка подкастов для прослушивания в мессенджере Telegram
                 </title>

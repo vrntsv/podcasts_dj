@@ -250,6 +250,7 @@ button:focus {
 .finder{
   width: 100%;
   position: absolute;
+  -webkit-user-select:text;
 }
 
 button,

@@ -42,7 +42,7 @@ def index_router(request):
                           }
                           )
         except Exception as e:
-            redirect('/ru')
+            return redirect('/ru')
     return HttpResponse(status=405)
 
 
