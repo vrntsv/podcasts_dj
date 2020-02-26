@@ -79,8 +79,9 @@ def series_router(request, podcast_id, series_id):
                       })
 
 
-def category_search_router(request, category_id):
+def category_search_router(request, category_name, category_id):
     print(services.get_cats_pd_id())
+    print(category_name)
 
     return render(request, 'pd_backend/index.html',
                   {

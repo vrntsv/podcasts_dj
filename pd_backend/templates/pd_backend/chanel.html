@@ -1,5 +1,6 @@
 {% extends 'pd_backend/base.html' %}
     {% load djutils %}
+    {% load custom_filters %}
     {% block title %}
         <title>
         {{ podcast.0|get_value_from_dict:'title_podcast' }} -
@@ -20,7 +21,7 @@
         <li class="breadcrumb-item active" aria-current="page"><a href="{% url "pd_backend:index_url" %}">Главная</a></li>
         <!-- По нажатию на название, выводит все подкасты с категорией ( если их несколько, то берется первая категория) -->
         {% if categories|length > 0 %}
-            <li class="breadcrumb-item active"><a href="{% url 'pd_backend:cat_url' categories.0|get_value_from_dict:'id_category' %}">{{ categories.0|get_value_from_dict:'title_category' }}</a></li>
+            <li class="breadcrumb-item active"><a href="{% url 'pd_backend:cat_url' categories.0|get_value_from_dict:'id_category'|get_category_eng_name categories.0|get_value_from_dict:'id_category' %}">{{ categories.0|get_value_from_dict:'title_category' }}</a></li>
             <li class="breadcrumb-item">{{ podcast.0|get_value_from_dict:'title_podcast' }}</li>
         {% else %}
             <li class="breadcrumb-item">{{ podcast.0|get_value_from_dict:'title_podcast' }}</li>
@@ -42,7 +43,7 @@
 		        {% if categories %}
 		        	<h5 style="color: grey">Категории: </h5>
 		            {% for category in categories %}
-		            	<a href="{% url "pd_backend:cat_url" category|get_value_from_dict:'id_category' %}"> {{ category|get_value_from_dict:'title_category' }}    </a>
+		            	<a href="{% url "pd_backend:cat_url" category|get_value_from_dict:'title_podcast' category|get_value_from_dict:'id_category' %}"> {{ category|get_value_from_dict:'title_category' }}    </a>
 		            {% endfor %}
 		        {% endif %}
 	        </div>

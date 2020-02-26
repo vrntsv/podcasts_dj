@@ -27,31 +27,29 @@
 </head>
 <body id="page-top">
 
-      <div class="fixed-top" style='width: 100%; max-height: 100px; background-color: #fff'>
+      <div class="fixed-top" style='width: 100%; height: 100px; background-color: #fff'>
         <div class="container" style="padding-top: 2%">
           <div class="row">
-            <div style='width: 20%'>
+            <div style='width: 20%; position: absolute; margin-left: 2%;'>
               <a href="{%  url 'pd_backend:index_url'  %}">
-                <h2>TgPodcast</h2>
+                <span class='d-inline-block'> 
+                  TgPodcast
+                </span>
               </a>
             </div>
-            <div style='width: 70%'>
-            <form action="{% url 'pd_backend:index_url' %}" method="post">
-                 {% csrf_token %}
-                 {% block searchbar %}
-                     <input style="margin-left: 5%; width: 70%; -webkit-user-select:text;" class="btn finder" id="query" name="search_data" type="finder" placeholder='Ищите по более чем 100 000 подкастов'>
-                 {% endblock %}
-
-                </form>
+            <div style='width: 75%; margin-left: 23%'>
+              <form action="{% url 'pd_backend:index_url' %}" method="post">
+                {% csrf_token %}
+                  {% block searchbar %}
+                    <input class='btn finder' style="margin-left: 3%; width: 80%; -webkit-user-select:text;" id="query" name="search_data" type="finder" placeholder='Ищите по более чем 100 000 подкастов'>
+                   {% endblock %}
+              </form>
             </div>
           </div>
         </div>
       </div>
       <div style='height: 100px; padding-bottom: 5px;'>
-
       </div>
-
-  <!-- Шапка -->
 
 
 

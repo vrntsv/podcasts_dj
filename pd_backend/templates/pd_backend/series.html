@@ -1,6 +1,7 @@
 {% extends 'pd_backend/base.html' %}
 
 {% load djutils %}
+{% load custom_filters %}
 {% block title %}
     <title>
        {{ series.0|get_value_from_dict:'title_audio' }} - {{ podcast_title }} - {{ podcast_author }}
@@ -21,7 +22,7 @@
         <ol class="breadcrumb">
           <li class="breadcrumb-item active" aria-current="page"><a href="{% url "pd_backend:index_url" %}">Главная</a></li>
             {% if podcast_categories|length > 0 %}
-                <li class="breadcrumb-item active"><a href="{% url 'pd_backend:cat_url' podcast_categories.0|get_value_from_dict:'id_category' %}">{{ podcast_categories.0|get_value_from_dict:'title_category' }}</a></li>
+                <li class="breadcrumb-item active"><a href="{% url 'pd_backend:cat_url' podcast_categories.0|get_value_from_dict:'id_category'|get_category_eng_name podcast_categories.0|get_value_from_dict:'id_category' %}">{{ podcast_categories.0|get_value_from_dict:'title_category' }}</a></li>
             {% endif %}
           <!-- По нажатию на название, выводит все подкасты с категорией ( если их несколько, то берется первая категория) -->
           <li class="breadcrumb-item"><a href="{% url "pd_backend:podcast_url" series.0|get_value_from_dict:'id_podcast' %}">{{ podcast_title }}</a></li>
