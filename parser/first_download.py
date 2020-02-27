@@ -1,11 +1,8 @@
-#!/home/dmitriy/iTunes/venv/bin/python
+#!/home/iTunes/venv/bin/python
 import func_for_clear_text
 import threading
 import requests
 import util
-
-# Базовая инфа + 50 выпусков
-# каждые 6 часов
 
 
 def pre_parse():
@@ -18,11 +15,18 @@ def pre_parse():
             if not each_podcast.get('url_podcast').startswith('http'):   # если нет http / https - на помойку
                 util.add_url_in_error_links(each_podcast.get('url_podcast'))
                 continue
-            if requests.get(each_podcast.get('url_podcast')).status_code == 404:     # если страницы не существует, кидаем в таблицу с битыми ссылками
+            try:
+                if requests.get(each_podcast.get('url_podcast')).status_code == 404:     # если страницы не существует, кидаем в таблицу с битыми ссылками
+                    print('error link\n', each_podcast.get('url_podcast'))
+                    util.add_url_in_error_links(each_podcast.get('url_podcast'))
+                else:
+                    print('Donwload: ',)
+                    print(each_podcast.get('url_podcast'))
+                    threading.Thread(target=parse, args=(each_podcast.get('url_podcast'), )).start()   # ебашим всё в потоки
+                    # parse(each_podcast.get('url_podcast'))   # парсим по одному без потоков
+            except requests.exceptions.ConnectionError:
+                print('error link\n', each_podcast.get('url_podcast'))
                 util.add_url_in_error_links(each_podcast.get('url_podcast'))
-            else:
-                threading.Thread(target=parse, args=(each_podcast.get('url_podcast'), )).start()   # многопоточный парсер
-                # parse(each_podcast.get('url_podcast'))   # парсим по одному без потоков
 
 
 def parse(each_podcast):
@@ -31,16 +35,21 @@ def parse(each_podcast):
         После благодаря циклу парсим выпуски, если что кол-во выпусков задано на
         87-ой строке.
             После завершения парсинга первых n выпусков, даем подкасту статус 2, который
-        оповещает о том, что данный подккаст требует дозагрузки ВСЕХ выпусков.
+        оповещает о том, что данный подккаст требует дозагрузки ВСЕХ подкастов.
     """
-    if each_podcast.find('podcasts.apple.com') > -1:    # если ссылка на iTunes
+    if each_podcast.find('apple') > -1 or each_podcast.find('itunes') > -1:    # если ссылка прям с эпл подкастов а не на рсс
         old_url = each_podcast
         each_podcast = requests.get('http://picklemonkey.net/flipper/extractor.php?feed='
                                     + each_podcast).text[12:-2].replace('\/', '/')
         util.change_url(each_podcast, old_url)
-    html = requests.get(each_podcast).content.decode('utf-8')     # получаем саму ленту
-    if html[:150].find('rss') > 41 or html[:150].find('rss') < 39:    # если это не rss лента (у рсс на индексах которые в условии написано рсс) кидаем в таблицу с битыми ссылками
+    try:
+        html = requests.get(each_podcast).content.decode('utf-8')     # получаем саму ленту
+    except UnicodeDecodeError:
+        html = requests.get(each_podcast).text
+
+    if html.find('rss') == -1:    # если это не rss лента (у рсс на индексах которые в условии написано рсс) кидаем в таблицу с битыми ссылками
         util.add_url_in_error_links(each_podcast)
+        print('error link, not find rss\n', each_podcast)
         return
     pre_item_html = html[:html.find('<item>')]      # записываем в ленте часть перед выпусками (для быстродействия?)
 
@@ -76,15 +85,15 @@ def parse(each_podcast):
     # находим категории если они есть
     categorys_podcast, subcategorys_podcast = func_for_clear_text.parse_category(pre_item_html)
 
-
+    # print('СССССССССССССССССССССССССССССССССССССССССССССССССССССССССССССССССССССылка ', each_podcast)
     # print('Название: ' + title_podcast + '\n',
-    #       'Описание: ' + description_podcast + '\n',
-    #       'Картинка: ' + image_podcasts + '\n',
-    #       'Ключевые слова: ' , keyword_podcasts , '\n',
-    #       'Автор: ' + author_podcast + '\n',
-    #       'Категории: ' , categorys_podcast , '\n',
-    #       'Подкатегории: ' , subcategorys_podcast , '\n',
-    #       )
+      #       'Описание: ' + description_podcast + '\n',
+    # #       'Картинка: ' + image_podcasts + '\n',
+    # #       'Ключевые слова: ' , keyword_podcasts , '\n',
+    #        'Автор: ' + author_podcast + '\n',
+    # #       'Категории: ' , categorys_podcast , '\n',
+    # #       'Подкатегории: ' , subcategorys_podcast , '\n',
+    #        )
 
     util.set_new_podcast(each_podcast, title_podcast, description_podcast, categorys_podcast,
                          image_podcasts, author_podcast, subcategorys_podcast, keyword_podcasts)
@@ -146,13 +155,14 @@ def parse(each_podcast):
         html = html[html.find('</item>') + 7:]   # режем ту строку с которой отработали, и идем далее
         # print('Название выпуска: ' + title_item + '\n',
         #       'Описание выпуска: ' + str(description_item) + '\n',
-        #       'Музыка: ' + mp3 + '\n',
-        #       'Дата публикации выпуска: ' + pubdata_item + '\n',
-        #       'Длительность выпуска: ' + duration_item + '\n',
-        #       'Картинка выпуска: ' + image_item + '\n',
-        #       'Категории выпуска: ', categorys_item , '\n',
-        #       'Подкатегории выпуска: ', subcategorys_item , '\n',
-        #       'Ключевые слова выпуска: ', keyword_item , '\n')
+              # 'Музыка: ' + mp3 + '\n',
+              # 'Дата публикации выпуска: ' + pubdata_item + '\n',
+              # 'Длительность выпуска: ' + duration_item + '\n',
+              # 'Картинка выпуска: ' + image_item + '\n',
+              # 'Категории выпуска: ', categorys_item , '\n',
+              # 'Подкатегории выпуска: ', subcategorys_item , '\n',
+              # 'Ключевые слова выпуска: ', keyword_item , '\n',
+              # )
 
 
 if __name__ == '__main__':

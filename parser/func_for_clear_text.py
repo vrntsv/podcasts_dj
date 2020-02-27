@@ -11,72 +11,38 @@ def check_on_shit(string):      # чистим полученные строки
 
 
 def encode_from_html(string):   # перекодировка из html символов в обычные
-    while re.search(r'&#\d{1,4};', string) is not None:     # чистим от цифр, заменяя буквами если вохможно (&#1044;)
-        swap_word = re.search(r'&#\d{1,4};', string)[0]    # копируем изменяемое слово
+    while re.search(r'&#\w?\d{1,4};', string) is not None:     # чистим от цифр, заменяя буквами если вохможно (&#1044;)
+        swap_word = re.search(r'&#\w?\d{1,4};', string).group()    # копируем изменяемое слово
         if len(swap_word) != 7 or not 1040 <= int(swap_word[-5:-1]) <= 1103:  # все слова которые не буквы, меняем на пробел
             new_word = ' '
         else:
-            new_word = chr(int(re.search(swap_word, string)[0][-5:-1]))
+            new_word = chr(int(re.search(swap_word, string).group()[-5:-1]))
         string = re.sub(swap_word, new_word, string)
 
-    while re.search(r'&\w{1,8};', string) is not None:  # чистим от кода на буквах (&amp;)
-        string = re.sub(re.search(r'&\w{1,8};', string)[0], '', string)
+    if re.search(r'&lt;|&gt;|quot;|&amp;', string):
+        string = string.replace('&lt;', '<').replace('&gt;', '>').replace('&quot;', '"').replace('&amp;', '&')
+    while re.search(r'&[^;]{1,8};', string) is not None:  # чистим от кода на буквах (&amp;)
+        string = re.sub(re.search(r'&[^;]{1,8};', string).group(), '', string)
     return string
 
 
 def clear_from_tags(string):
-    if re.search(r'&lt;|&gt;|quot;', string):
-        string = string.replace('&lt;', '<').replace('&gt;', '>').replace('&quot;', '"')
-    if re.search(r"</?p[^</]*>", string) is not None:
-        string = re.sub(r"</?p[^</]*>", '\n', string)
-    if re.search(r"<['/', ' ']{0,2}br['/', ' ']{0,2}>", string) is not None:
-        string = re.sub(r"<['/', ' ']{0,2}br['/', ' ']{0,2}>", '\n', string)
-    if string.find('<strong>') > -1:
-        string = string.replace('<strong>', '').replace('</strong>', '')
-    while string.find('<a') > -1:
-        temp_str = string[string.find('<a'):string.find('</a>') + 4]
-        if len(temp_str) < 2:   # кастыль, ну а что сделаешь
-            break
-        url = temp_str[temp_str.find(re.search(r'href\s?=\s?"', string, flags=re.IGNORECASE).group()) + len(re.search(r'href\s?=\s?"', string, flags=re.IGNORECASE).group()):]
-        url = url[:url.find('"')]   # тупо ссылка которая в href
-        content = temp_str[temp_str.find('>') + 1:temp_str.find('</a>')]    # контент котоорый в теле тега <a>
-        if content == url:
-            string = string.replace(temp_str, ' ' + url)
-        else:
-            string = string.replace(temp_str, ' ' + url + ' - ' + content)
-    if re.search(r"<span[^</]*>", string) is not None:
-        for i in re.findall(r"</?span[^</]*>", string):
-            # print(i)
-            string = string.replace(i, ' ')
-    if string.find('<ul>') > -1:
-        string = re.sub(r"<(/?ul)>", '', string)
-    if string.find('<ol>') > -1:
-        string = re.sub(r"<(/?ol)>", '', string)
-    if re.search(r"</?li.*>", string) is not None:
-        string = re.sub(r"</?li.*>", '\n', string)
-    if string.find('<u>') > -1:
-        string = re.sub(r"</?u>", '', string)
-    if re.search(r"<['/', ' ']{0,2}hr['/', ' ']{0,2}>", string) is not None:
-        string = re.sub(r"<['/', ' ']{0,2}hr['/', ' ']{0,2}>", '\n', string)
-    if string.find('<div') > -1:
-        string = re.sub(r"<div.*</div>", '', string)
-    if re.search(r"<img.*/>", string) is not None:
-        string = re.sub(r"<img.*/>", '', string)
-    if re.search(r"<h.>", string) is not None:
-        string = re.sub(r"</?h.>", '', string)
-    if re.search(r"</?b>", string) is not None:
-        string = re.sub(r"</?b>", '', string)
-    if re.search(r"<(/?tr|/?td)>", string) is not None:
-        string = re.sub(r"<(/?tr|/?td)>", '', string)
-    if re.search(r"</?table.*>", string) is not None:
-        string = re.sub(r"</?table.*>", '', string)
-    if re.search(r"&(nbsp|amp);", string) is not None:
-        string = re.sub(r"&(nbsp|amp);", '', string)
-    if string.find('<em') > -1:
-        string = re.sub(r"</?em>", '', string, flags=re.IGNORECASE)
-    if string.find('<code') > -1:
-        string = re.sub(r"</?code>", '', string)
-    return re.sub(r"\n{3,}", '', string)
+    if re.search(r'&lt;|&gt;|quot;|&amp;', string):
+        string = string.replace('&lt;', '<').replace('&gt;', '>').replace('&quot;', '"').replace('&amp;', '&')
+    string = re.sub(r"</?(hr|br|p|li)[^>]*>", '\n', string)
+    # for i in re.findall(r"<a[^<]*</a>", string):  # достаем ссылку, без тега
+    #     isurl = re.search(r'href=\"[^\"]*', i, flags=re.IGNORECASE)
+    #     if isurl is not None:
+    #         url = isurl.group()[isurl.group().find('"'):][1:]   # тупо ссылка которая в href
+    #     else:
+    #         url = ''
+    #     content = re.search(r">[^<]*<", i).group()[1:-1]    # контент котоорый в теле тега <a>
+    #     if content == url:
+    #         string = string.replace(i, ' ' + url + ' ')
+    #     else:
+    #         string = string.replace(i, content + ' - ' + url + ' ')
+    string = re.sub("<[^a][^>]*[^a]>", '', string)
+    return string
 
 
 def convert_time(time):      # конвертация времени из секунд в часы
@@ -86,6 +52,8 @@ def convert_time(time):      # конвертация времени из сек
 def parse_category(html):   # парсим категории
     categorys, subcategorys = str(), str()
     while html.find('category ') > -1:  # считываем все категории
+        if html.find('category text="') == -1:
+            break
         html = html[html.find('category text="') + 15:]
         if html.find('>') < html.find('/>'):  # если у категории есть подкатегории
             categorys += html[: html.find('"')] + ', '
@@ -109,6 +77,8 @@ def parse_keywords(html):
 
 
 def parse_description(html):
+    if html.find('description>') == -1:
+        return None
     temp_code = html[html.find('description>') + 12:]
     return check_on_shit(temp_code[:temp_code.find(re.search(r"</(desc|itun)", temp_code).group())])
 
@@ -118,7 +88,9 @@ def clear_pubdata(string):
                    'Jul': '07', 'Aug': '08', 'Sep': '09', 'Oct': '10', 'Nov': '11', 'Dec': '12'}
     if string[1] == ' ':    # для нормального времени (2 -> 02)
         string = '0' + string[0] + ' ' + string[2:]
-    month = re.search(r'\w\w\w', string)[0]
+    month = re.search(r'\w\w\w', string).group()
+    if dict_day.get(month) is None:
+        return None
     string = re.sub(month, dict_day.get(month), string)  # запуливаем вместо названия месяца номер месяца
     string = re.sub(r'[ :]', '', string)    # вместо пробела и двоиточия ничего, в инт бахаем
     return string[4:8] + string[2:4] + string[:2] + string[-6:]   # подводим под шаблон бд

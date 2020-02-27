@@ -125,11 +125,11 @@
                     {% if not carousel_podcasts  %}
                       <div class="card-footer" style='margin-top:-40px; margin-bottom: 30px;'>
                           {% if search_data|lower in podcast|get_value_from_dict:'title_podcast'|lower and not searched_cat_name%}
-                            <text style="color: grey">Название: </text>{{ podcast|get_value_from_dict:'title_podcast'|highlight:search_data|truncatechars_html:150}}
+                            <text style="color: grey">Название: </text>{{ podcast|get_value_from_dict:'title_podcast'|highlight:search_data|truncatechars_html:150|safe|urlize}}
                           {% elif search_data|lower in podcast|get_value_from_dict:'description_podcast'|lower and not searched_cat_name%}
-                            <text style="color: grey">Описание: </text>{{ podcast|get_value_from_dict:'description_podcast'|highlight:search_data|truncatechars_html:150}}
+                            <text style="color: grey">Описание: </text>{{ podcast|get_value_from_dict:'description_podcast'|highlight:search_data|truncatechars_html:150|safe|urlize}}
                           {% elif search_data|lower in podcast|get_value_from_dict:'author_podcast'|lower and not searched_cat_name %}
-                            <text style="color: grey">Автор: </text>{{ podcast|get_value_from_dict:'author_podcast'|highlight:search_data|truncatechars_html:150}}
+                            <text style="color: grey">Автор: </text>{{ podcast|get_value_from_dict:'author_podcast'|highlight:search_data|truncatechars_html:150|safe|urlize}}
                           {% endif %}
                           {% if cats_by_id %}
                             {% with pd_id=podcast|get_value_from_dict:'id_podcast' %}
@@ -163,7 +163,7 @@
                       <img class="img-fluid card-img-top" src="{{ item|get_value_from_dict:'url_image_podcast' }}"  onerror="this.onerror=null; this.src='https://support.apple.com/library/content/dam/edam/applecare/images/en_US/ios/podcasts/ios9-podcasts-app-tile.png'" alt="None">
                   </div>
                   <div class="card-footer" style='margin-top:-40px; margin-bottom: 30px;'>
-                    <text style="color: grey; background-color: #FFFF00">Название выпуска: </text>{{ item|get_value_from_dict:'title_audio'|highlight:search_data|truncatechars_html:50}}
+                    <text style="color: grey; background-color: #FFFF00">Название выпуска: </text>{{ item|get_value_from_dict:'title_audio'|highlight:search_data|truncatechars_html:50|safe|urlize}}
                   </div>
                 </div>
               {% endfor %}
@@ -182,7 +182,7 @@
                     </div>
 
                     <div class="card-footer" style='margin-top:-40px; margin-bottom: 30px;'>
-                          <text style="color: grey; background-color: #FFFF00">Описание выпуска: </text>{{ item|get_value_from_dict:'title_audio'|truncatechars_html:50}}
+                          <text style="color: grey; background-color: #FFFF00">Описание выпуска: </text>{{ item|get_value_from_dict:'title_audio'|truncatechars_html:50|safe|urlize}}
                     </div>
                 </div>
               {% endfor %}

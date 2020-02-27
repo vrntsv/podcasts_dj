@@ -22,9 +22,9 @@
         <!-- По нажатию на название, выводит все подкасты с категорией ( если их несколько, то берется первая категория) -->
         {% if categories|length > 0 %}
             <li class="breadcrumb-item active"><a href="{% url 'pd_backend:cat_url' categories.0|get_value_from_dict:'id_category'|get_category_eng_name categories.0|get_value_from_dict:'id_category' %}">{{ categories.0|get_value_from_dict:'title_category' }}</a></li>
-            <li class="breadcrumb-item">{{ podcast.0|get_value_from_dict:'title_podcast' }}</li>
+            <li class="breadcrumb-item">{{ podcast.0|get_value_from_dict:'title_podcast'|safe|urlize }}</li>
         {% else %}
-            <li class="breadcrumb-item">{{ podcast.0|get_value_from_dict:'title_podcast' }}</li>
+            <li class="breadcrumb-item">{{ podcast.0|get_value_from_dict:'title_podcast'|safe|urlize }}</li>
         {% endif %}
       </ol>
     </nav>
@@ -34,7 +34,7 @@
         	<img class="card-img-top"  src="{{ podcast.0|get_value_from_dict:'url_image_podcast' }}" alt="Card image">
           	<div class="card-body ">
             	<h2 class="card-title"> {{ podcast.0|get_value_from_dict:'title_podcast' }}</h2>
-                <p>{{ podcast.0|get_value_from_dict:'description_podcast'|linebreaks }}
+                <p>{{ podcast.0|get_value_from_dict:'description_podcast'|linebreaks|safe|urlize }}
                 <br><br>
                     Выпусков: {{series_count}} штук
                 </p>
@@ -58,9 +58,9 @@
                 {% if s|get_value_from_dict:'description_audio'%}
                     {% if s|get_value_from_dict:'description_audio'|length < 255 %}
 
-                        <p>{{ s|get_value_from_dict:'description_audio'|linebreaks  }}</p>
+                        <p>{{ s|get_value_from_dict:'description_audio'|linebreaks|safe|urlize }}</p>
                     {% else %}
-                        <p>{{ s|get_value_from_dict:'description_audio'|truncatechars_html:255|linebreaks }}</p>
+                        <p>{{ s|get_value_from_dict:'description_audio'|truncatechars_html:255|linebreaks|safe|urlize }}</p>
                     {% endif %}
                 {% endif %}
             </div>

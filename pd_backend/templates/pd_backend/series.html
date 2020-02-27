@@ -25,8 +25,8 @@
                 <li class="breadcrumb-item active"><a href="{% url 'pd_backend:cat_url' podcast_categories.0|get_value_from_dict:'id_category'|get_category_eng_name podcast_categories.0|get_value_from_dict:'id_category' %}">{{ podcast_categories.0|get_value_from_dict:'title_category' }}</a></li>
             {% endif %}
           <!-- По нажатию на название, выводит все подкасты с категорией ( если их несколько, то берется первая категория) -->
-          <li class="breadcrumb-item"><a href="{% url "pd_backend:podcast_url" series.0|get_value_from_dict:'id_podcast' %}">{{ podcast_title }}</a></li>
-          <li class="breadcrumb-item active" aria-current="page">{{series.0|get_value_from_dict:'title_audio'}}</li>
+          <li class="breadcrumb-item"><a href="{% url "pd_backend:podcast_url" series.0|get_value_from_dict:'id_podcast' %}">{{ podcast_title|safe|urlize }}</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{series.0|get_value_from_dict:'title_audio'|safe|urlize}}</li>
         </ol>
       </nav>
     </div>
@@ -35,7 +35,7 @@
         <div class="card my-2" style="width: 80%">
           <div class="card-body ">
             <h2 class="card-title">{{ series.0|get_value_from_dict:'title_audio' }} </h2>
-                        <h5 style='color: #1abc9c' class="card-title text-left">{{podcast_author}} </h5>
+                        <h5 style='color: #1abc9c' class="card-title text-left">{{podcast_author|safe|urlize}} </h5>
 
             <audio controls style="width: 100%;">
               <source src="audio/music.ogg" type="audio/ogg; codecs=vorbis">
@@ -46,7 +46,7 @@
           </div>
           <div class="card-footer">
               {% if series.0|get_value_from_dict:'description_audio'|linebreaks %}
-                 <p>{{ series.0|get_value_from_dict:'description_audio'|linebreaks  }}</p>
+                 <p>{{ series.0|get_value_from_dict:'description_audio'|linebreaks|safe|urlize }}</p>
               {% endif %}
           </div>
         </div>
