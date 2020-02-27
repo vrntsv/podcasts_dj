@@ -158,7 +158,12 @@ def get_cats_pd_id():
 
 
 def get_cat_name_by_id(cat_id):
-    return models.Categorys.objects.filter(id_category=cat_id).values()[0]['ru_title']
+    try:
+        data = models.Categorys.objects.filter(id_category=cat_id).values()[0]['ru_title']
+        return data
+    except IndexError:
+        print(models.Categorys.objects.filter(id_category=cat_id).values())
+        return models.Categorys.objects.filter(id_category=cat_id).values()[0]['title_category']
 
 
 def get_podcast_title_by_id(pd_id):

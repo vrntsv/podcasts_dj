@@ -132,21 +132,21 @@
                             <text style="color: grey">Автор: </text>{{ podcast|get_value_from_dict:'author_podcast'|highlight:search_data|truncatechars_html:150|safe|urlize}}
                           {% endif %}
                           {% if cats_by_id %}
-                            {% with pd_id=podcast|get_value_from_dict:'id_podcast' %}
-                              <!-- Вывод всех категорий канала -->
-                              <text style="color: grey">Категории: </text>
-                              {%  with data=cats_by_id|get_value_from_dict:pd_id  %}
-                                {% for id, name in data.items %}
-                                  {% if id == searched_cat_id %}
-                                    <a href="{% url 'pd_backend:cat_url' id|get_category_eng_name id%}" style="background-color: #FFFF00"> {{ name }}</a> <text>  </text>
-                                  {% else %}
-                                    <a href="{% url 'pd_backend:cat_url' id|get_category_eng_name id%}" > {{ name }} </a> <text>  </text>
-                                  {% endif %}
-                                {% endfor %}
-                              {% endwith %}
-                            {% endwith %}
+{#                            {% with pd_id=podcast|get_value_from_dict:'id_podcast' %}#}
+{#                              <!-- Вывод всех категорий канала -->#}
+{#                              <text style="color: grey">Категории: </text>#}
+{#                              {%  with data=cats_by_id|get_value_from_dict:pd_id  %}#}
+{#                                {% for id, name in data.items %}#}
+{#                                  {% if id == searched_cat_id %}#}
+{#                                    <a href="{% url 'pd_backend:cat_url' id|get_category_eng_name id%}" style="background-color: #FFFF00"> {{ name }}</a> <text>  </text>#}
+{#                                  {% else %}#}
+{#                                    <a href="{% url 'pd_backend:cat_url' id|get_category_eng_name id%}" > {{ name }} </a> <text>  </text>#}
+{#                                  {% endif %}#}
+{#                                {% endfor %}#}
+{#                              {% endwith %}#}
+{#                            {% endwith %}#}
                           {% endif %}
-                      </div> 
+                      </div>
                     {% endif %}
                 </div>
               {% endfor %}
