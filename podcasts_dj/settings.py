@@ -85,7 +85,7 @@ TEMPLATES = [
 DATABASES = {
   'default': {
       'ENGINE': 'django.db.backends.mysql',
-      'NAME': 'podcasts_parser',
+      'NAME': 'pp_server',
       'USER': 'admin',
       'PASSWORD': 'admin',
       'HOST': '/Applications/MAMP/tmp/mysql/mysql.sock',

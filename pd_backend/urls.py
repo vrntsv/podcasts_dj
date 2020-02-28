@@ -25,6 +25,6 @@ urlpatterns = [
     path('ru/', views.index_router, name='index_url'),
     path('ru/podcast/id<int:podcast_id>', views.podcast_router, name='podcast_url'),
     path('ru/podcast/id<int:podcast_id>/e<int:series_id>', views.series_router, name='series_url'),
-    path('ru/category/<category_name>_<int:category_id>', views.category_search_router, name='cat_url'),
+    path('ru/category/<category_name>/<int:category_id>', views.category_search_router, name='cat_url'),
     #path('tag?<int:tag_id>', views.tag_search, name='tag_url'),
 ]

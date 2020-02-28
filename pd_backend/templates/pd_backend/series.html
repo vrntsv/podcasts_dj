@@ -8,6 +8,10 @@
     </title>
 {% endblock %}
 
+{% block page_info %}
+    {{ series.0|get_value_from_dict:'title_audio'|highlight_all }} - {{ podcast_title }}
+{% endblock %}
+
 {% block description %}
              <meta name="description" content="Online каталог подкастов на русском tgpodcasts: слушать подкаст {{ podcast_title }} ">
 

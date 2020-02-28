@@ -2,18 +2,32 @@
 {% load static %}
 {% load djutils %}
 {% load custom_filters %}
+{% block page_info %}
+{% if searched_cat_name %}
+    Поиск по категории {{ searched_cat_name|highlight_all }}
+{% elif search_data %}
+    Поиск по запросу {{ search_data|highlight_all }}
+{% else %}
+    Главная
+{% endif %}
+
+
+
+{% endblock %}
+
     {% block searchbar %}
 
 {% if search_data %}
-  <input class='btn finder' style="margin-left: 3%; width: 90%; -webkit-user-select:text;" class="btn finder" id="query" name="search_data" type="finder" placeholder='Ищите по более чем 100 000 подкастов' value="{{ search_data }}">
+  <input class='btn finder' style="margin-left: 3%; width: 90%; -webkit-user-select:text;" class="btn finder" id="query" name="search_data" type="finder" placeholder='Ищите по более чем 100 000 подкастов' >
   <meta name="description" content="Лучшая и самая полная подборка подкастов айтюнс по теме {{ search_data }}, все что есть в Itunes Podcasts в категории {{ searched_cat_name }} в каталоге tgpodcasts">
   <title>
     {{search_data}}: лучшие подкасты, каталог itunes podcasts по теме {{ search_data }}
   </title>
 
 
+
   {% elif searched_cat_name %}
-    <input class='btn finder' style="margin-left: 3%; width: 90%; -webkit-user-select:text;" class="btn finder" id="query" name="search_data" type="finder" placeholder='Ищите по более чем 100 000 подкастов' value="{{ searched_cat_name }}">
+    <input class='btn finder' style="margin-left: 3%; width: 90%; -webkit-user-select:text;" class="btn finder" id="query" name="search_data" type="finder" placeholder='Ищите по более чем 100 000 подкастов' ">
     <meta name="description" content="Лучшая и самая полная подборка подкастов айтюнс по теме {{ searched_cat_name }}, все что есть в Itunes Podcasts в категории {{ searched_cat_name }} в каталоге tgpodcasts">
     <title>
       {{searched_cat_name}}: лучшие подкасты, каталог itunes podcasts по теме {{ searched_cat_name }}

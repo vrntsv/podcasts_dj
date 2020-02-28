@@ -138,22 +138,36 @@ def search_category(tag_id):
 def get_cats_pd_id():
     data = {}
     podcasts = models.PodcastsWithCategorys.objects.all().values()
-    print(podcasts)
+    print('test', podcasts)
     for p in podcasts:
         if p['id_podcast'] in data.keys():
+            cat = models.Categorys.objects.all().filter(id_category=p['id_category']).values()
+            if not cat:
+                continue
+            try:
+                title = list(cat)[0]['ru_title']
+            except Exception:
+                title = list(cat)[0]['title_podcast']
             data[p['id_podcast']].update(
                 {
-                    p['id_category']:
-                models.Categorys.objects.all().filter(id_category=p['id_category']).values()[0]['ru_title']
+                    p['id_category']: title
                 }
             )
+
         else:
+            cat = models.Categorys.objects.all().filter(id_category=p['id_category']).values()
+            if not cat:
+                continue
+            try:
+                title = list(cat)[0]['ru_title']
+            except Exception:
+                title = list(cat)[0]['title_podcast']
             data.update({
                 p['id_podcast']: {
-                    p['id_category']:
-                    models.Categorys.objects.all().filter(id_category=p['id_category']).values()[0]['ru_title']
+                    p['id_category']: title
                 }
             })
+
     return data
 
 

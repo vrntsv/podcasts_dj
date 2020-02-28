@@ -14,7 +14,6 @@ def index_router(request):
     if request.method == 'GET':
         main_podcast = services.get_main_podcasts()
         page = request.GET.get('page', 1)
-        print(services.get_cats_pd_id())
         paginator = Paginator(main_podcast, 20)
         try:
             main_podcast = paginator.page(page)

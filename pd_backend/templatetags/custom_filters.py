@@ -12,6 +12,12 @@ def highlight(text, search):
 
 
 @register.filter
+def highlight_all(text):
+    highlighted = text.replace(text, '<span style="background-color: #FFFF00">{}</span>'.format(text))
+    return mark_safe(highlighted)
+
+
+@register.filter
 def len(data):
     return data.__len__()
 
